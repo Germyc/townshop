@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Códigos QR - Proyectos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-bottom: 40px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .qr-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+        }
+        .qr-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .qr-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .qr-card h2 {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qr-card img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            background: #fff;
+        }
+        .qr-card a {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .qr-card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Códigos QR de las Landing Pages</h1>
+
+    <div class="qr-container">
+        
+        <!-- QR 1 -->
+        <div class="qr-card">
+            <h2>Petshop Huellitas - Estilo Bento Premium</h2>
+            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing1&size=300" alt="QR Landing 1">
+            <a href="https://townshop-one.vercel.app/landing1" target="_blank">https://townshop-one.vercel.app/landing1</a>
+        </div>
+
+        <!-- QR 2 -->
+        <div class="qr-card">
+            <h2>Panadería El Maná - Delicias Artesanales</h2>
+            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing2&size=300" alt="QR Landing 2">
+            <a href="https://townshop-one.vercel.app/landing2" target="_blank">https://townshop-one.vercel.app/landing2</a>
+        </div>
+
+        <!-- QR 3 -->
+        <div class="qr-card">
+            <h2>Espacio Premium - Experiencia Gourmet</h2>
+            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing3&size=300" alt="QR Landing 3">
+            <a href="https://townshop-one.vercel.app/landing3" target="_blank">https://townshop-one.vercel.app/landing3</a>
+        </div>
+
+        <!-- QR 4 -->
+        <div class="qr-card">
+            <h2>Petshop Huellitas - Todo para tu mascota</h2>
+            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing4&size=300" alt="QR Landing 4">
+            <a href="https://townshop-one.vercel.app/landing4" target="_blank">https://townshop-one.vercel.app/landing4</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
