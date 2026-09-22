@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panadería El Maná - Delicias Artesanales</title>
+    <style>
+        :root {
+            --brand-dark: #451a03;
+            --brand-light: #fdf8f6;
+            --accent: #d97706;
+            --text: #78350f;
+            --radius-lg: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        body { background-color: var(--brand-light); color: var(--brand-dark); padding-bottom: 40px; }
+
+        .hero-banner {
+            width: 100%;
+            height: 260px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6)); }
+
+        .brand-header {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+        }
+        .brand-header h1 { font-size: 26px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .brand-header p { font-size: 14px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        .content-wrapper {
+            max-width: 450px;
+            margin: -20px auto 0;
+            position: relative;
+            background: var(--brand-light);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .grid-products {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .product-strip {
+            background: white;
+            padding: 10px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(69,26,3,0.04);
+        }
+        .product-strip img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; }
+        .product-details { flex-grow: 1; }
+        .product-details h4 { font-size: 15px; font-weight: 700; }
+        .product-details p { font-size: 12px; color: #9a3412; }
+
+        .btn-wsp-block {
+            background-color: #15803d;
+            color: white;
+            text-align: center;
+            display: block;
+            padding: 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(21,128,61,0.2);
+        }
+
+        .footer-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 25px;
+            font-size: 13px;
+            line-height: 1.5;
+            border: 1px solid #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado con imagen integrada -->
+    <div class="hero-banner">
+        <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877" alt="Panes artesanales recién salidos">
+        <div class="hero-overlay"></div>
+        <div class="brand-header">
+            <h1>Panadería El Maná</h1>
+            <p>Horneado fresco todos los días en el barrio</p>
+        </div>
+    </div>
+
+    <!-- Contenedor de contenido -->
+    <div class="content-wrapper">
+        <h3 class="section-title">Nuestras Especialidades</h3>
+        
+        <div class="grid-products">
+            <div class="product-strip">
+                <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877" alt="Facturas">
+                <div class="product-details">
+                    <h4>Facturas Artesanales</h4>
+                    <p>Manteca y grasa hechas en el día</p>
+                </div>
+            </div>
+
+            <div class="product-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877" alt="Pan Casero"> -->
+                <img src="https://images.unsplash.com/photo-1556471013-0001958d2f12" alt="Pan Casero">
+                <div class="product-details">
+                    <h4>Pan de Campo y Mignon</h4>
+                    <p>Crocante y sin aditivos artificiales</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="https://wa.me" class="btn-wsp-block" target="_blank">
+            💬 Hacer pedido por WhatsApp
+        </a>
+
+        <div class="footer-card">
+            <p>📍 <strong>Dirección:</strong> Alsina 412, Burzaco</p>
+            <p>⏰ <strong>Atención:</strong> Martes a Domingos de 07:00 a 13:00 y 16:30 a 20:30 hs.</p>
+        </div>
+    </div>
+
+</body>
+</html>
