@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio Premium - Experiencia Gourmet</title>
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --accent-glow: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cabinet Grotesk', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-light); overflow-x: hidden; padding-bottom: 40px; }
+
+        /* Efecto de Luces de Fondo (Glow) */
+        .glow-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+        }
+        .orb-1 { top: -10%; left: -20%; width: 400px; height: 400px; background: var(--accent-glow); }
+        .orb-2 { top: 30%; right: -20%; width: 350px; height: 350px; background: var(--accent-purple); }
+
+        /* Contenedor Principal App */
+        .wrapper { max-width: 480px; margin: 0 auto; padding: 20px 16px; }
+
+        /* Hero Avanzado */
+        .hero {
+            position: relative;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .hero img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.5s ease; }
+        .hero:hover img { transform: scale(1); }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 20%, rgba(9, 13, 22, 0.95)); }
+        
+        .hero-content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+        }
+        .tag {
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid var(--accent-glow);
+            color: #22d3ee;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .hero h1 { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Bento Cards Estilo Glassmorphism */
+        .grid-bento { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 25px; }
+        
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover { border-color: rgba(6, 182, 212, 0.4); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(6, 182, 212, 0.05); }
+        .full-width { grid-column: span 2; }
+
+        .glass-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; color: #f1f5f9; }
+        .glass-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+        .icon { font-size: 24px; margin-bottom: 12px; display: inline-block; }
+
+        /* Showcase de Productos Estilo List-Row Premium */
+        .product-row { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); padding: 12px; border-radius: 16px; margin-bottom: 10px; }
+        .product-row img { width: 55px; height: 55px; object-fit: cover; border-radius: 12px; border: 1px solid var(--glass-border); }
+        .product-info { flex-grow: 1; }
+        .product-info h4 { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+        .product-info p { font-size: 12px; color: var(--text-muted); }
+
+        /* Botón de Acción con Efecto de Brillo Pulsante */
+        .btn-neon {
+            background: linear-gradient(135deg, var(--accent-glow), var(--accent-purple));
+            color: #fff;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+            margin-top: 25px;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .btn-neon:hover { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); transform: translateY(-1px); }
+
+        .footer-text { text-align: center; margin-top: 30px; font-size: 12px; color: #475569; }
+    </style>
+</head>
+<body>
+
+    <!-- Orbes de luz decorativos -->
+    <div class="glow-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="wrapper">
+        
+        <!-- Hero Section -->
+        <header class="hero">
+            <img src="https://plus.unsplash.com/premium_photo-1661438404948-3f90203f5a39" alt="Showroom Premium">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <span class="tag">Exclusivo & Natural</span>
+                <h1>Origen Natural</h1>
+            </div>
+        </header>
+
+        <!-- Bento Grid Stack -->
+        <div class="grid-bento">
+            <div class="glass-card">
+                <span class="icon">✨</span>
+                <h3>Calidad</h3>
+                <p>Selección orgánica certificada sin intermediarios.</p>
+            </div>
+            
+            <div class="glass-card">
+                <span class="icon">🛵</span>
+                <h3>Envíos</h3>
+                <p>Entregas rápidas y protegidas en la zona.</p>
+            </div>
+
+            <div class="glass-card full-width">
+                <h3>🪐 Destacados de la Semana</h3>
+                <p style="margin-bottom: 15px;">Lo más buscado por los vecinos:</p>
+                
+                <div class="product-row">
+                    <img src="https://plus.unsplash.com/premium_photo-1668677227454-213252229b73" alt="Frutos Secos Mix">
+                    <div class="product-info">
+                        <h4>Mix Frutos Secos Energy</h4>
+                        <p>Almendras, castañas, nueces y pasas premium</p>
+                    </div>
+                </div>
+
+                <div class="product-row">
+                    <img src="https://images.unsplash.com/photo-1654515722385-c684c5331c04" alt="Harinas Orgánicas">
+                    <div class="product-info">
+                        <h4>Miel Orgánica Pura</h4>
+                        <p>De pradera, 100% cruda y natural</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card full-width">
+                <h3>📍 Ubicación y Horarios</h3>
+                <p style="color: #e2e8f0; margin-top: 4px;">Mitre 950, Adrogué</p>
+                <p style="font-size: 12px; margin-top: 4px;">Lunes a Sábados de 09:00 a 20:30 hs.</p>
+            </div>
+        </div>
+
+        <!-- CTA Call to Action -->
+        <a href="https://wa.me" class="btn-neon" target="_blank">
+            💬 Realizar Pedido Premium
+        </a>
+
+        <div class="footer-text">
+            <p>Diseño exclusivo de vanguardia para comercios de barrio.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
