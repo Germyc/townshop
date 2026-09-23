@@ -161,39 +161,46 @@
 		</header>
 
 		<nav class="landing-grid" aria-label="Versiones de landing">
-			<article class="landing-card">
-				<iframe class="preview" src="landing1/index.html" title="Preview de Landing 1" loading="lazy"></iframe>
-				<a class="landing-link" href="landing1/index.html">
-					<span class="number">01</span>
-					<h2>Landing 1</h2>
-				</a>
-			</article>
-			<article class="landing-card">
-				<iframe class="preview" src="landing2/index.html" title="Preview de Landing 2" loading="lazy"></iframe>
-				<a class="landing-link" href="landing2/index.html">
-					<span class="number">02</span>
-					<h2>Landing 2</h2>
-				</a>
-			</article>
-			<article class="landing-card">
-				<iframe class="preview" src="landing3/index.html" title="Preview de Landing 3" loading="lazy"></iframe>
-				<a class="landing-link" href="landing3/index.html">
-					<span class="number">03</span>
-					<h2>Landing 3</h2>
-				</a>
-			</article>
-			<article class="landing-card">
-				<iframe class="preview" src="landing4/index.html" title="Preview de Landing 4" loading="lazy"></iframe>
-				<a class="landing-link" href="landing4/index.html">
-					<span class="number">04</span>
-					<h2>Landing 4</h2>
-				</a>
-			</article>
 		</nav>
 
 		<footer class="qr-footer">
 			<a class="qr-button" href="c_digos_qr.html">Abrir códigos QR</a>
 		</footer>
 	</main>
+
+	<script>
+		const landingGrid = document.querySelector('.landing-grid');
+
+		function createLandingCard(number) {
+			const path = `landing${number}/index.html`;
+			const card = document.createElement('article');
+			card.className = 'landing-card';
+			card.innerHTML = `
+				<iframe class="preview" src="${path}" title="Preview de Landing ${number}" loading="lazy"></iframe>
+				<a class="landing-link" href="${path}">
+					<span class="number">${String(number).padStart(2, '0')}</span>
+					<h2>Landing ${number}</h2>
+				</a>`;
+			return card;
+		}
+
+		async function loadLandings() {
+			for (let number = 1; ; number += 1) {
+				const path = `landing${number}/index.html`;
+				let response;
+
+				try {
+					response = await fetch(path);
+				} catch (error) {
+					break;
+				}
+
+				if (!response.ok) break;
+				landingGrid.appendChild(createLandingCard(number));
+			}
+		}
+
+		loadLandings();
+	</script>
 </body>
 </html>

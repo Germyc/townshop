@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado del Barrio - Nivel Avanzado</title>
+    <style>
+        :root {
+            --primary: #10b981; /* Verde esmeralda moderno */
+            --primary-dark: #059669;
+            --bg-color: #f8fafc;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-top: 70px; padding-bottom: 50px; }
+
+        /* Navbar Fijo */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 1000;
+        }
+        .navbar h2 { font-size: 20px; font-weight: 800; color: var(--primary-dark); }
+        .cart-btn {
+            background: var(--primary); color: var(--white); border: none;
+            padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; transition: background 0.3s;
+        }
+        .cart-btn:hover { background: var(--primary-dark); }
+        .cart-badge { background: white; color: var(--primary); border-radius: 50%; padding: 2px 6px; font-size: 12px; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800') center/cover;
+            height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; text-align: center; padding: 20px; margin-bottom: 30px;
+        }
+        .hero h1 { font-size: 32px; margin-bottom: 10px; }
+        .hero p { font-size: 16px; opacity: 0.9; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
+
+        /* Filtros */
+        .filtros { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        .filtros::-webkit-scrollbar { display: none; }
+        .btn-filtro {
+            background: var(--white); border: 1px solid #e2e8f0; padding: 8px 16px;
+            border-radius: 50px; cursor: pointer; white-space: nowrap; font-weight: 600; color: var(--text-light); transition: all 0.2s;
+        }
+        .btn-filtro.activo { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Catálogo Grid */
+        .catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .producto-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: transform 0.2s; }
+        .producto-card:hover { transform: translateY(-3px); }
+        .producto-img { height: 160px; width: 100%; object-fit: cover; }
+        .producto-info { padding: 15px; }
+        .producto-info h3 { font-size: 16px; margin-bottom: 5px; }
+        .producto-info p { font-size: 13px; color: var(--text-light); margin-bottom: 15px; height: 35px; }
+        .precio-row { display: flex; justify-content: space-between; align-items: center; }
+        .precio { font-weight: bold; font-size: 18px; color: var(--primary-dark); }
+        .btn-add { background: #f1f5f9; color: var(--text-main); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-add:active { background: #e2e8f0; }
+
+        /* Modal Carrito (Flotante) */
+        .cart-modal {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh;
+            background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease;
+            z-index: 2000; display: flex; flex-direction: column;
+        }
+        .cart-modal.abierto { right: 0; }
+        .cart-header { padding: 20px; background: var(--bg-color); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
+        .close-cart { background: none; border: none; font-size: 24px; cursor: pointer; }
+        .cart-items { padding: 20px; flex-grow: 1; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; }
+        .cart-footer { padding: 20px; background: var(--bg-color); border-top: 1px solid #e2e8f0; }
+        .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+        .btn-wsp-enviar { background: #25d366; color: white; width: 100%; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; gap: 10px; }
+
+        /* Capa oscura de fondo al abrir carrito */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
+        .overlay.activo { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <h2>🛒 Almacén Gourmet</h2>
+        <button class="cart-btn" onclick="toggleCart()">
+            🛒 Mi Pedido <span class="cart-badge" id="cart-count">0</span>
+        </button>
+    </nav>
+
+    <header class="hero">
+        <h1>Lo mejor del barrio, a tu puerta.</h1>
+        <p>Armá tu pedido y te lo enviamos en minutos.</p>
+    </header>
+
+    <div class="container">
+        <!-- Filtros Interactivos -->
+        <div class="filtros" id="filtros-container">
+            <button class="btn-filtro activo" onclick="filtrar('todos')">Todos</button>
+            <button class="btn-filtro" onclick="filtrar('panaderia')">Panadería</button>
+            <button class="btn-filtro" onclick="filtrar('frescos')">Frescos y Quesos</button>
+            <button class="btn-filtro" onclick="filtrar('sintacc')">Sin TACC</button>
+        </div>
+
+        <!-- Grilla de Productos -->
+        <div class="catalogo" id="catalogo-productos">
+            <!-- Producto 1 -->
+            <div class="producto-card" data-categoria="panaderia">
+                <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Pan">
+                <div class="producto-info">
+                    <h3>Pan de Masa Madre</h3>
+                    <p>Hogaza artesanal de 500g, horneada en el día.</p>
+                    <div class="precio-row">
+                        <span class="precio">$2.500</span>
+                        <button class="btn-add" onclick="agregarAlCarrito('Pan de Masa Madre', 2500)">+ Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="producto-card" data-categoria="frescos">
+                <img src="https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Queso">
+                <div class="producto-info">
+                    <h3>Tabla de Quesos</h3>
+                    <p>Mix de quesos regionales ideal para picadas.</p>
+                    <div class="precio-row">
+                        <span class="precio">$8.900</span>
+                        <button class="btn-add" onclick="agregarAlCarrito('Tabla de Quesos', 8900)">+ Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="producto-card" data-categoria="panaderia">
+                <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Medialunas">
+                <div class="producto-info">
+                    <h3>Medialunas de Manteca</h3>
+                    <p>Docena de medialunas dulces y esponjosas.</p>
+                    <div class="precio-row">
+                        <span class="precio">$3.200</span>
+                        <button class="btn-add" onclick="agregarAlCarrito('Medialunas (Docena)', 3200)">+ Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="producto-card" data-categoria="sintacc">
+                <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Galletitas">
+                <div class="producto-info">
+                    <h3>Galletitas Sin TACC</h3>
+                    <p>Sabor vainilla con chips de chocolate. Libres de gluten.</p>
+                    <div class="precio-row">
+                        <span class="precio">$1.800</span>
+                        <button class="btn-add" onclick="agregarAlCarrito('Galletitas Sin TACC', 1800)">+ Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menú Lateral Carrito -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Tu Pedido</h3>
+            <button class="close-cart" onclick="toggleCart()">✖</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <p style="text-align:center; color:gray; margin-top: 20px;">Tu carrito está vacío.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span>Total:</span>
+                <span id="cart-total">$0</span>
+            </div>
+            <button class="btn-wsp-enviar" onclick="enviarPedidoWsp()">
+                💬 Enviar Pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        let carrito = [];
+        const nroWhatsapp = "5491123456789"; // REEMPLAZAR POR EL NUMERO DEL CLIENTE
+
+        // Función para filtrar productos
+        function filtrar(categoria) {
+            // Estilos de botones
+            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
+            event.target.classList.add('activo');
+
+            // Mostrar/Ocultar
+            document.querySelectorAll('.producto-card').forEach(card => {
+                if(categoria === 'todos' || card.getAttribute('data-categoria') === categoria) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Funciones del Carrito
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarUI();
+            
+            // Pequeño feedback visual
+            const btn = event.target;
+            const textoOriginal = btn.innerText;
+            btn.innerText = "¡Agregado!";
+            btn.style.background = "#10b981";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.innerText = textoOriginal;
+                btn.style.background = "#f1f5f9";
+                btn.style.color = "#1e293b";
+            }, 1000);
+        }
+
+        function actualizarUI() {
+            // Actualizar burbuja
+            document.getElementById('cart-count').innerText = carrito.length;
+            
+            // Generar lista
+            const contenedor = document.getElementById('cart-items-container');
+            if(carrito.length === 0) {
+                contenedor.innerHTML = '<p style="text-align:center; color:gray; margin-top: 20px;">Tu carrito está vacío.</p>';
+            } else {
+                contenedor.innerHTML = '';
+                carrito.forEach((item, index) => {
+                    contenedor.innerHTML += `
+                        <div class="cart-item">
+                            <span>${item.nombre}</span>
+                            <div>
+                                <strong>$${item.precio}</strong>
+                                <span style="color:red; cursor:pointer; margin-left:10px; font-size:12px;" onclick="eliminarDelCarrito(${index})">❌</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Calcular Total
+            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+            document.getElementById('cart-total').innerText = `$${total}`;
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarUI();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('abierto');
+            document.getElementById('overlay').classList.toggle('activo');
+        }
+
+        // Enviar pedido armado a WhatsApp
+        function enviarPedidoWsp() {
+            if(carrito.length === 0) {
+                alert("Agrega productos antes de enviar el pedido.");
+                return;
+            }
+
+            let mensaje = "Hola! Quiero hacer el siguiente pedido:%0A%0A";
+            carrito.forEach(item => {
+                mensaje += `- ${item.nombre} ($${item.precio})%0A`;
+            });
+            
+            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+            mensaje += `%0A*Total estimado: $${total}*`;
+            mensaje += "%0A%0AQuedo a la espera para coordinar el envío/retiro. Gracias!";
+
+            const url = `https://wa.me/${nroWhatsapp}?text=${mensaje}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+:root {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --bg-color: #f8fafc;
+    --text-main: #1e293b;
+    --text-light: #64748b;
+    --white: #ffffff;
+    --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+body { background-color: var(--bg-color); color: var(--text-main); padding-top: 70px; padding-bottom: 50px; }
+
+/* Navbar */
+.navbar {
+    position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 1000;
+}
+.navbar h2 { font-size: 20px; font-weight: 800; color: var(--primary-dark); }
+.cart-btn {
+    background: var(--primary); color: var(--white); border: none;
+    padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; transition: background 0.3s;
+}
+.cart-badge { background: white; color: var(--primary); border-radius: 50%; padding: 2px 6px; font-size: 12px; }
+
+/* Hero */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800') center/cover;
+    height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    color: white; text-align: center; padding: 20px; margin-bottom: 30px;
+}
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
+
+/* Filtros */
+.filtros { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+.filtros::-webkit-scrollbar { display: none; }
+.btn-filtro {
+    background: var(--white); border: 1px solid #e2e8f0; padding: 8px 16px;
+    border-radius: 50px; cursor: pointer; white-space: nowrap; font-weight: 600; color: var(--text-light);
+}
+.btn-filtro.activo { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* Catálogo Grid */
+.catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+.producto-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+.producto-img { height: 160px; width: 100%; object-fit: cover; }
+.producto-info { padding: 15px; }
+.producto-info h3 { font-size: 16px; margin-bottom: 5px; }
+.producto-info p { font-size: 13px; color: var(--text-light); margin-bottom: 15px; height: 35px; }
+.precio-row { display: flex; justify-content: space-between; align-items: center; }
+.precio { font-weight: bold; font-size: 18px; color: var(--primary-dark); }
+.btn-add { background: #f1f5f9; color: var(--text-main); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+
+/* Modal Carrito */
+.cart-modal {
+    position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh;
+    background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease;
+    z-index: 2000; display: flex; flex-direction: column;
+}
+.cart-modal.abierto { right: 0; }
+.cart-header { padding: 20px; background: var(--bg-color); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
+.close-cart { background: none; border: none; font-size: 24px; cursor: pointer; }
+.cart-items { padding: 20px; flex-grow: 1; overflow-y: auto; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; }
+.cart-footer { padding: 20px; background: var(--bg-color); border-top: 1px solid #e2e8f0; }
+.total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+.btn-wsp-enviar { background: #25d366; color: white; width: 100%; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+
+/* Overlay oscuro */
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
+.overlay.activo { display: block; }
