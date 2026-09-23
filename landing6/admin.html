@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Negocios</title>
+    <style>
+        * { box-sizing: border-box; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
+        body { background: #f1f5f9; color: #1e293b; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        /* Cajas de diseño */
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* Formularios */
+        input, select { width: 100%; padding: 10px; margin: 8px 0 15px; border: 1px solid #cbd5e1; border-radius: 6px; }
+        .btn-primary { background: #2563eb; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-danger { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        .btn-edit { background: #eab308; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        
+        /* Lista de productos */
+        .producto-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding: 10px 0; }
+        
+        /* Pantallas */
+        #pantalla-dashboard { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- PANTALLA 1: LOGIN -->
+    <div id="pantalla-login" class="card">
+        <h2 style="text-align: center; margin-bottom: 20px;">🔒 Acceso al Panel</h2>
+        <input type="email" id="login-email" placeholder="Correo electrónico">
+        <input type="password" id="login-pass" placeholder="Contraseña">
+        <button class="btn-primary" id="btn-login">Ingresar</button>
+        <p id="login-error" style="color: red; text-align: center; margin-top: 10px; display: none;">Error al iniciar sesión</p>
+    </div>
+
+    <!-- PANTALLA 2: PANEL DE CONTROL -->
+    <div id="pantalla-dashboard">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;">
+            <h2>Gestión de Catálogo</h2>
+            <button id="btn-logout" style="background: transparent; border: 1px solid #1e293b; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Cerrar sesión</button>
+        </div>
+
+        <div class="card">
+            <h3 id="form-titulo">Agregar Nuevo Producto</h3>
+            <input type="hidden" id="prod-id"> <!-- Campo oculto para saber si editamos o creamos -->
+            
+            <label>Nombre del producto:</label>
+            <input type="text" id="prod-nombre" placeholder="Ej: Docena de empanadas">
+            
+            <label>Precio ($):</label>
+            <input type="number" id="prod-precio" placeholder="Ej: 4500">
+            
+            <label>Categoría:</label>
+            <select id="prod-categoria">
+                <option value="panaderia">Panadería</option>
+                <option value="frescos">Frescos y Quesos</option>
+                <option value="sintacc">Sin TACC</option>
+            </select>
+            
+            <label>Descripción corta:</label>
+            <input type="text" id="prod-desc" placeholder="Detalle del producto">
+            
+            <label>URL de la Imagen (Opcional):</label>
+            <input type="text" id="prod-img" placeholder="https://...">
+
+            <button class="btn-primary" id="btn-guardar" style="background: #10b981;">Guardar Producto</button>
+        </div>
+
+        <div class="card">
+            <h3>Mis Productos</h3>
+            <div id="lista-productos" style="margin-top: 15px;">
+                Cargando...
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
