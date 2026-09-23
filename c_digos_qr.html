@@ -73,37 +73,53 @@
 
     <h1>Códigos QR de las Landing Pages</h1>
 
-    <div class="qr-container">
-        
-        <!-- QR 1 -->
-        <div class="qr-card">
-            <h2>Petshop Huellitas - Estilo Bento Premium</h2>
-            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing1&size=300" alt="QR Landing 1">
-            <a href="https://townshop-one.vercel.app/landing1" target="_blank">https://townshop-one.vercel.app/landing1</a>
-        </div>
+    <div class="qr-container" id="qr-container"></div>
 
-        <!-- QR 2 -->
-        <div class="qr-card">
-            <h2>Panadería El Maná - Delicias Artesanales</h2>
-            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing2&size=300" alt="QR Landing 2">
-            <a href="https://townshop-one.vercel.app/landing2" target="_blank">https://townshop-one.vercel.app/landing2</a>
-        </div>
+    <script>
+        const qrContainer = document.getElementById('qr-container');
+        const siteUrl = 'https://townshop-one.vercel.app';
+        const maximumLandings = 100;
+        const currentLandings = [1, 2, 3, 4, 5, 6];
 
-        <!-- QR 3 -->
-        <div class="qr-card">
-            <h2>Espacio Premium - Experiencia Gourmet</h2>
-            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing3&size=300" alt="QR Landing 3">
-            <a href="https://townshop-one.vercel.app/landing3" target="_blank">https://townshop-one.vercel.app/landing3</a>
-        </div>
+        function createQrCard(number) {
+            const landingUrl = `${siteUrl}/landing${number}`;
+            const card = document.createElement('div');
+            card.className = 'qr-card';
+            card.innerHTML = `
+                <h2>Landing ${number}</h2>
+                <img src="https://quickchart.io/qr?text=${encodeURIComponent(landingUrl)}&size=300" alt="QR Landing ${number}">
+                <a href="${landingUrl}" target="_blank" rel="noopener">${landingUrl}</a>`;
+            return card;
+        }
 
-        <!-- QR 4 -->
-        <div class="qr-card">
-            <h2>Petshop Huellitas - Todo para tu mascota</h2>
-            <img src="https://quickchart.io/qr?text=https://townshop-one.vercel.app/landing4&size=300" alt="QR Landing 4">
-            <a href="https://townshop-one.vercel.app/landing4" target="_blank">https://townshop-one.vercel.app/landing4</a>
-        </div>
+        async function landingExists(path) {
+            try {
+                const response = await fetch(path, { cache: 'no-store' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
 
-    </div>
+        async function loadQrCodes() {
+            let foundLandings = 0;
+
+            for (let number = 1; number <= maximumLandings; number += 1) {
+                if (!await landingExists(`landing${number}/index.html`)) break;
+
+                qrContainer.appendChild(createQrCard(number));
+                foundLandings += 1;
+            }
+
+            if (foundLandings === 0) {
+                currentLandings.forEach((number) => {
+                    qrContainer.appendChild(createQrCard(number));
+                });
+            }
+        }
+
+        loadQrCodes();
+    </script>
 
 </body>
 </html>
