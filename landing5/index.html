@@ -3,287 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mercado del Barrio - Nivel Avanzado</title>
-    <style>
-        :root {
-            --primary: #10b981; /* Verde esmeralda moderno */
-            --primary-dark: #059669;
-            --bg-color: #f8fafc;
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --white: #ffffff;
-            --radius: 12px;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding-top: 70px; padding-bottom: 50px; }
-
-        /* Navbar Fijo */
-        .navbar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 1000;
-        }
-        .navbar h2 { font-size: 20px; font-weight: 800; color: var(--primary-dark); }
-        .cart-btn {
-            background: var(--primary); color: var(--white); border: none;
-            padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; transition: background 0.3s;
-        }
-        .cart-btn:hover { background: var(--primary-dark); }
-        .cart-badge { background: white; color: var(--primary); border-radius: 50%; padding: 2px 6px; font-size: 12px; }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800') center/cover;
-            height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center; padding: 20px; margin-bottom: 30px;
-        }
-        .hero h1 { font-size: 32px; margin-bottom: 10px; }
-        .hero p { font-size: 16px; opacity: 0.9; }
-
-        .container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
-
-        /* Filtros */
-        .filtros { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
-        .filtros::-webkit-scrollbar { display: none; }
-        .btn-filtro {
-            background: var(--white); border: 1px solid #e2e8f0; padding: 8px 16px;
-            border-radius: 50px; cursor: pointer; white-space: nowrap; font-weight: 600; color: var(--text-light); transition: all 0.2s;
-        }
-        .btn-filtro.activo { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* Catálogo Grid */
-        .catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .producto-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: transform 0.2s; }
-        .producto-card:hover { transform: translateY(-3px); }
-        .producto-img { height: 160px; width: 100%; object-fit: cover; }
-        .producto-info { padding: 15px; }
-        .producto-info h3 { font-size: 16px; margin-bottom: 5px; }
-        .producto-info p { font-size: 13px; color: var(--text-light); margin-bottom: 15px; height: 35px; }
-        .precio-row { display: flex; justify-content: space-between; align-items: center; }
-        .precio { font-weight: bold; font-size: 18px; color: var(--primary-dark); }
-        .btn-add { background: #f1f5f9; color: var(--text-main); border: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .btn-add:active { background: #e2e8f0; }
-
-        /* Modal Carrito (Flotante) */
-        .cart-modal {
-            position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh;
-            background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease;
-            z-index: 2000; display: flex; flex-direction: column;
-        }
-        .cart-modal.abierto { right: 0; }
-        .cart-header { padding: 20px; background: var(--bg-color); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
-        .close-cart { background: none; border: none; font-size: 24px; cursor: pointer; }
-        .cart-items { padding: 20px; flex-grow: 1; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; }
-        .cart-footer { padding: 20px; background: var(--bg-color); border-top: 1px solid #e2e8f0; }
-        .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
-        .btn-wsp-enviar { background: #25d366; color: white; width: 100%; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; gap: 10px; }
-
-        /* Capa oscura de fondo al abrir carrito */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
-        .overlay.activo { display: block; }
-    </style>
+    <title>Peludos & Felices | Tienda de Mascotas</title>
+    <!-- Tailwind CSS (CDN para despliegue rápido sin build steps) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para los íconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-slate-50 font-sans text-slate-800 scroll-smooth">
 
-    <!-- Navegación -->
-    <nav class="navbar">
-        <h2>🛒 Almacén Gourmet</h2>
-        <button class="cart-btn" onclick="toggleCart()">
-            🛒 Mi Pedido <span class="cart-badge" id="cart-count">0</span>
-        </button>
+    <!-- Barra de Navegación -->
+    <nav class="bg-white shadow-sm p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-orange-500 hover:text-orange-600 transition">
+                <i class="fas fa-paw mr-2"></i>Peludos & Felices
+            </a>
+            <a href="#productos" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full font-medium transition shadow-sm">
+                Catálogo
+            </a>
+        </div>
     </nav>
 
-    <header class="hero">
-        <h1>Lo mejor del barrio, a tu puerta.</h1>
-        <p>Armá tu pedido y te lo enviamos en minutos.</p>
+    <!-- Encabezado (Hero Section) -->
+    <header class="bg-orange-100 py-24 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">Todo lo que tu mejor amigo necesita</h1>
+            <p class="text-lg md:text-xl text-slate-600 mb-10">Alimentos, accesorios y mucho amor, a un clic de distancia.</p>
+            <a href="#productos" class="inline-block bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold px-8 py-4 rounded-full shadow-lg transition transform hover:-translate-y-1">
+                🐾 Ver Tienda
+            </a>
+        </div>
     </header>
 
-    <div class="container">
-        <!-- Filtros Interactivos -->
-        <div class="filtros" id="filtros-container">
-            <button class="btn-filtro activo" onclick="filtrar('todos')">Todos</button>
-            <button class="btn-filtro" onclick="filtrar('panaderia')">Panadería</button>
-            <button class="btn-filtro" onclick="filtrar('frescos')">Frescos y Quesos</button>
-            <button class="btn-filtro" onclick="filtrar('sintacc')">Sin TACC</button>
+    <!-- Beneficios -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div class="p-6 rounded-2xl hover:bg-slate-50 transition">
+                <i class="fas fa-truck text-4xl text-orange-500 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Envíos a Domicilio</h3>
+                <p class="text-slate-600">Entregas rápidas en la zona sur para que a tu mascota no le falte nada.</p>
+            </div>
+            <div class="p-6 rounded-2xl hover:bg-slate-50 transition">
+                <i class="fas fa-star text-4xl text-orange-500 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Calidad Premium</h3>
+                <p class="text-slate-600">Trabajamos con las mejores marcas de nutrición y cuidado animal.</p>
+            </div>
+            <div class="p-6 rounded-2xl hover:bg-slate-50 transition">
+                <i class="fas fa-credit-card text-4xl text-orange-500 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Múltiples Pagos</h3>
+                <p class="text-slate-600">Aceptamos efectivo, transferencias y tarjetas (Mercado Pago).</p>
+            </div>
         </div>
+    </section>
 
-        <!-- Grilla de Productos -->
-        <div class="catalogo" id="catalogo-productos">
-            <!-- Producto 1 -->
-            <div class="producto-card" data-categoria="panaderia">
-                <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Pan">
-                <div class="producto-info">
-                    <h3>Pan de Masa Madre</h3>
-                    <p>Hogaza artesanal de 500g, horneada en el día.</p>
-                    <div class="precio-row">
-                        <span class="precio">$2.500</span>
-                        <button class="btn-add" onclick="agregarAlCarrito('Pan de Masa Madre', 2500)">+ Agregar</button>
+    <!-- Productos Destacados -->
+    <section id="productos" class="py-20 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Productos Destacados</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tarjeta 1 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="h-56 bg-slate-100 flex items-center justify-center">
+                        <!-- Aquí puedes poner la etiqueta <img> de tu producto real -->
+                        <i class="fas fa-dog text-6xl text-slate-300"></i>
                     </div>
-                </div>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="producto-card" data-categoria="frescos">
-                <img src="https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Queso">
-                <div class="producto-info">
-                    <h3>Tabla de Quesos</h3>
-                    <p>Mix de quesos regionales ideal para picadas.</p>
-                    <div class="precio-row">
-                        <span class="precio">$8.900</span>
-                        <button class="btn-add" onclick="agregarAlCarrito('Tabla de Quesos', 8900)">+ Agregar</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="producto-card" data-categoria="panaderia">
-                <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Medialunas">
-                <div class="producto-info">
-                    <h3>Medialunas de Manteca</h3>
-                    <p>Docena de medialunas dulces y esponjosas.</p>
-                    <div class="precio-row">
-                        <span class="precio">$3.200</span>
-                        <button class="btn-add" onclick="agregarAlCarrito('Medialunas (Docena)', 3200)">+ Agregar</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 4 -->
-            <div class="producto-card" data-categoria="sintacc">
-                <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=400" class="producto-img" alt="Galletitas">
-                <div class="producto-info">
-                    <h3>Galletitas Sin TACC</h3>
-                    <p>Sabor vainilla con chips de chocolate. Libres de gluten.</p>
-                    <div class="precio-row">
-                        <span class="precio">$1.800</span>
-                        <button class="btn-add" onclick="agregarAlCarrito('Galletitas Sin TACC', 1800)">+ Agregar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Menú Lateral Carrito -->
-    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-header">
-            <h3>Tu Pedido</h3>
-            <button class="close-cart" onclick="toggleCart()">✖</button>
-        </div>
-        <div class="cart-items" id="cart-items-container">
-            <p style="text-align:center; color:gray; margin-top: 20px;">Tu carrito está vacío.</p>
-        </div>
-        <div class="cart-footer">
-            <div class="total-row">
-                <span>Total:</span>
-                <span id="cart-total">$0</span>
-            </div>
-            <button class="btn-wsp-enviar" onclick="enviarPedidoWsp()">
-                💬 Enviar Pedido por WhatsApp
-            </button>
-        </div>
-    </div>
-
-    <!-- Lógica JavaScript -->
-    <script>
-        let carrito = [];
-        const nroWhatsapp = "5491123456789"; // REEMPLAZAR POR EL NUMERO DEL CLIENTE
-
-        // Función para filtrar productos
-        function filtrar(categoria) {
-            // Estilos de botones
-            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
-            event.target.classList.add('activo');
-
-            // Mostrar/Ocultar
-            document.querySelectorAll('.producto-card').forEach(card => {
-                if(categoria === 'todos' || card.getAttribute('data-categoria') === categoria) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Funciones del Carrito
-        function agregarAlCarrito(nombre, precio) {
-            carrito.push({ nombre, precio });
-            actualizarUI();
-            
-            // Pequeño feedback visual
-            const btn = event.target;
-            const textoOriginal = btn.innerText;
-            btn.innerText = "¡Agregado!";
-            btn.style.background = "#10b981";
-            btn.style.color = "white";
-            setTimeout(() => {
-                btn.innerText = textoOriginal;
-                btn.style.background = "#f1f5f9";
-                btn.style.color = "#1e293b";
-            }, 1000);
-        }
-
-        function actualizarUI() {
-            // Actualizar burbuja
-            document.getElementById('cart-count').innerText = carrito.length;
-            
-            // Generar lista
-            const contenedor = document.getElementById('cart-items-container');
-            if(carrito.length === 0) {
-                contenedor.innerHTML = '<p style="text-align:center; color:gray; margin-top: 20px;">Tu carrito está vacío.</p>';
-            } else {
-                contenedor.innerHTML = '';
-                carrito.forEach((item, index) => {
-                    contenedor.innerHTML += `
-                        <div class="cart-item">
-                            <span>${item.nombre}</span>
-                            <div>
-                                <strong>$${item.precio}</strong>
-                                <span style="color:red; cursor:pointer; margin-left:10px; font-size:12px;" onclick="eliminarDelCarrito(${index})">❌</span>
-                            </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Alimento Premium Adulto (15kg)</h3>
+                        <p class="text-slate-500 text-sm mb-4">Nutrición completa para el día a día. Alta digestibilidad para razas medianas y grandes.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$45.000</span>
+                            <a href="https://wa.me/5491100000000?text=Hola,%20quiero%20el%20Alimento%20Premium" target="_blank" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Comprar</a>
                         </div>
-                    `;
-                });
-            }
+                    </div>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="h-56 bg-slate-100 flex items-center justify-center">
+                        <i class="fas fa-cat text-6xl text-slate-300"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Torre Rascador (3 niveles)</h3>
+                        <p class="text-slate-500 text-sm mb-4">Diversión y descanso para evitar que arañen los muebles. Forrado en peluche suave.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$32.000</span>
+                            <a href="https://wa.me/5491100000000?text=Hola,%20quiero%20el%20Rascador" target="_blank" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tarjeta 3 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="h-56 bg-slate-100 flex items-center justify-center">
+                        <i class="fas fa-bed text-6xl text-slate-300"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Cama Antiestrés (Talle M)</h3>
+                        <p class="text-slate-500 text-sm mb-4">Base impermeable, súper suave y fácil de lavar en lavarropas. Varios colores.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$18.500</span>
+                            <a href="https://wa.me/5491100000000?text=Hola,%20quiero%20la%20Cama" target="_blank" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            // Calcular Total
-            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
-            document.getElementById('cart-total').innerText = `$${total}`;
-        }
+    <!-- Sobre Nosotros -->
+    <section class="py-20 bg-orange-500 text-white">
+        <div class="max-w-3xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Pasión por los animales</h2>
+            <p class="text-lg md:text-xl font-light italic leading-relaxed">
+                "Hola, soy Germán. Sabemos que las mascotas son un integrante fundamental de la familia. Por eso, seleccionamos cuidadosamente cada producto para asegurar su salud, comodidad y felicidad. Te asesoramos de manera personalizada para que encuentres exactamente lo que tu compañero de cuatro patas necesita."
+            </p>
+        </div>
+    </section>
 
-        function eliminarDelCarrito(index) {
-            carrito.splice(index, 1);
-            actualizarUI();
-        }
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-xl font-bold text-white mb-4"><i class="fas fa-paw mr-2 text-orange-500"></i>Peludos & Felices</h4>
+                <p class="text-sm">Todo para tu mascota, con el mejor asesoramiento y atención garantizada.</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold text-white mb-4">Contacto Directo</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-white transition"><i class="fab fa-whatsapp w-6 text-green-400"></i> +54 9 11 0000-0000</a></li>
+                    <li><a href="#" class="hover:text-white transition"><i class="fab fa-instagram w-6 text-pink-400"></i> @TuTiendaMascotas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold text-white mb-4">Punto de Retiro</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><i class="fas fa-map-marker-alt w-6 text-red-400"></i> Burzaco, Buenos Aires</li>
+                    <li><i class="fas fa-clock w-6 text-blue-400"></i> Lunes a Sábados - 9:00 a 18:00 hs</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-12 border-t border-slate-800 pt-8 text-xs text-slate-500">
+            <p>&copy; 2026 Peludos & Felices. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
-        function toggleCart() {
-            document.getElementById('cart-modal').classList.toggle('abierto');
-            document.getElementById('overlay').classList.toggle('activo');
-        }
-
-        // Enviar pedido armado a WhatsApp
-        function enviarPedidoWsp() {
-            if(carrito.length === 0) {
-                alert("Agrega productos antes de enviar el pedido.");
-                return;
-            }
-
-            let mensaje = "Hola! Quiero hacer el siguiente pedido:%0A%0A";
-            carrito.forEach(item => {
-                mensaje += `- ${item.nombre} ($${item.precio})%0A`;
-            });
-            
-            const total = carrito.reduce((sum, item) => sum + item.precio, 0);
-            mensaje += `%0A*Total estimado: $${total}*`;
-            mensaje += "%0A%0AQuedo a la espera para coordinar el envío/retiro. Gracias!";
-
-            const url = `https://wa.me/${nroWhatsapp}?text=${mensaje}`;
-            window.open(url, '_blank');
-        }
-    </script>
 </body>
 </html>
