@@ -183,21 +183,39 @@
 			return card;
 		}
 
-		const landings = [
-			{ path: 'landing1/index.html', label: 'Landing 1' },
-			{ path: 'landing2/index.html', label: 'Landing 2' },
-			{ path: 'landing3/index.html', label: 'Landing 3' },
-			{ path: 'landing4/index.html', label: 'Landing 4' },
-			{ path: 'landing5/index.html', label: 'Landing 5' },
-			{ path: 'landing6/index.html', label: 'Landing 6' },
-			{ path: 'landing-demos/landing-1/index.html', label: 'Demo Almacén 1' },
-			{ path: 'landing-demos/landing-2/index.html', label: 'Demo Almacén 2' },
-			{ path: 'landing-demos/landing-3/index.html', label: 'Demo Almacén 3' }
-		];
+		const maximumLandings = 100;
 
-		landings.forEach((item, index) => {
-			landingGrid.appendChild(createLandingCard(index + 1, item.path, item.label));
-		});
+		async function landingExists(path) {
+			try {
+				const response = await fetch(path, { method: 'HEAD', cache: 'no-store' });
+				return response.ok;
+			} catch (error) {
+				return false;
+			}
+		}
+
+		async function loadLandings() {
+			const patterns = [
+				{ path: (number) => `landing${number}/index.html`, label: (number) => `Landing ${number}` },
+				{ path: (number) => `landing-demos/landing-${number}/index.html`, label: (number) => `Demo Almacén ${number}` }
+			];
+
+			const landings = await Promise.all(patterns.flatMap((pattern) =>
+				Array.from({ length: maximumLandings }, (_, index) => index + 1)
+					.map(async (number) => {
+						const path = pattern.path(number);
+						return await landingExists(path)
+							? { path, label: pattern.label(number) }
+							: null;
+					})
+			));
+
+			landings.filter(Boolean).forEach((item, index) => {
+				landingGrid.appendChild(createLandingCard(index + 1, item.path, item.label));
+			});
+		}
+
+		loadLandings();
 	</script>
 </body>
 </html>

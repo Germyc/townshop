@@ -79,15 +79,14 @@
         const qrContainer = document.getElementById('qr-container');
         const siteUrl = 'https://townshop-one.vercel.app';
         const maximumLandings = 100;
-        const currentLandings = [1, 2, 3, 4, 5, 6];
 
-        function createQrCard(number) {
-            const landingUrl = `${siteUrl}/landing${number}`;
+        function createQrCard(landing) {
+            const landingUrl = new URL(landing.path.replace(/index\.html$/, ''), `${siteUrl}/`).href;
             const card = document.createElement('div');
             card.className = 'qr-card';
             card.innerHTML = `
-                <h2>Landing ${number}</h2>
-                <img src="https://quickchart.io/qr?text=${encodeURIComponent(landingUrl)}&size=300" alt="QR Landing ${number}">
+                <h2>${landing.label}</h2>
+                <img src="https://quickchart.io/qr?text=${encodeURIComponent(landingUrl)}&size=300" alt="QR ${landing.label}">
                 <a href="${landingUrl}" target="_blank" rel="noopener">${landingUrl}</a>`;
             return card;
         }
@@ -102,20 +101,24 @@
         }
 
         async function loadQrCodes() {
-            let foundLandings = 0;
+            const patterns = [
+                { path: (number) => `landing${number}/index.html`, label: (number) => `Landing ${number}` },
+                { path: (number) => `landing-demos/landing-${number}/index.html`, label: (number) => `Demo Almacén ${number}` }
+            ];
 
-            for (let number = 1; number <= maximumLandings; number += 1) {
-                if (!await landingExists(`landing${number}/index.html`)) break;
+            const landings = await Promise.all(patterns.flatMap((pattern) =>
+                Array.from({ length: maximumLandings }, (_, index) => index + 1)
+                    .map(async (number) => {
+                        const path = pattern.path(number);
+                        return await landingExists(path)
+                            ? { path, label: pattern.label(number) }
+                            : null;
+                    })
+            ));
 
-                qrContainer.appendChild(createQrCard(number));
-                foundLandings += 1;
-            }
-
-            if (foundLandings === 0) {
-                currentLandings.forEach((number) => {
-                    qrContainer.appendChild(createQrCard(number));
-                });
-            }
+            landings.filter(Boolean).forEach((landing) => {
+                qrContainer.appendChild(createQrCard(landing));
+            });
         }
 
         loadQrCodes();
