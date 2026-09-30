@@ -4,102 +4,199 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peludos & Felices | Tienda de Mascotas</title>
-    <!-- Tailwind CSS (CDN para despliegue rápido sin build steps) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome para los íconos -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="description" content="Peludos & Felices: alimento, accesorios y cuidado para tu mascota. Envíos a domicilio en zona sur y retiro en Burzaco." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Peludos & Felices | Tienda de Mascotas" />
+    <meta property="og:description" content="Alimento, accesorios y cuidado para tu mascota. Envíos a domicilio en zona sur." />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <style>
+        :root {
+            --orange-100: #ffedd5;
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-300: #cbd5e1;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --white: #ffffff;
+            --green-400: #4ade80;
+            --pink-400: #f472b6;
+            --red-400: #f87171;
+            --blue-400: #60a5fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--slate-50); color: var(--slate-800); }
+        a { text-decoration: none; }
+        ul { list-style: none; }
+
+        .container { max-width: 72rem; margin: 0 auto; padding: 0 1rem; }
+
+        /* Navbar */
+        .navbar {
+            position: sticky; top: 0; z-index: 50;
+            background: var(--white); box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+            padding: 1rem;
+        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-size: 1.5rem; font-weight: 700; color: var(--orange-500); transition: color .15s; }
+        .brand:hover { color: var(--orange-600); }
+        .btn {
+            display: inline-block; background: var(--orange-500); color: var(--white);
+            padding: .5rem 1.25rem; border-radius: 9999px; font-weight: 500;
+            transition: background .15s, transform .15s, box-shadow .15s;
+        }
+        .btn:hover { background: var(--orange-600); }
+
+        /* Hero */
+        .hero { background: var(--orange-100); padding: 6rem 0; text-align: center; }
+        .hero .inner { max-width: 56rem; margin: 0 auto; padding: 0 1rem; }
+        .hero h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); font-weight: 800; color: var(--slate-900); margin-bottom: 1.5rem; }
+        .hero p { font-size: 1.125rem; color: var(--slate-600); margin-bottom: 2.5rem; }
+        .btn-lg { font-size: 1.125rem; font-weight: 600; padding: 1rem 2rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1); }
+        .btn-lg:hover { transform: translateY(-4px); }
+
+        /* Secciones */
+        .benefits { padding: 4rem 0; background: var(--white); }
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .benefit { padding: 1.5rem; border-radius: 1rem; text-align: center; transition: background .15s; }
+        .benefit:hover { background: var(--slate-50); }
+        .benefit .icon { font-size: 2.25rem; color: var(--orange-500); margin-bottom: 1rem; }
+        .benefit h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: .5rem; }
+        .benefit p { color: var(--slate-600); }
+
+        /* Productos */
+        .products { padding: 5rem 0; background: var(--slate-50); }
+        .section-title { font-size: 1.875rem; font-weight: 700; text-align: center; margin-bottom: 3rem; }
+        .card {
+            background: var(--white); border-radius: 1rem; overflow: hidden;
+            border: 1px solid var(--slate-100);
+            box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+            transition: box-shadow .3s;
+        }
+        .card:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+        .card-media { height: 14rem; background: var(--slate-100); display: flex; align-items: center; justify-content: center; font-size: 3.75rem; color: var(--slate-300); }
+        .card-body { padding: 1.5rem; }
+        .card-body h3 { font-weight: 700; font-size: 1.25rem; margin-bottom: .5rem; }
+        .card-body .desc { color: var(--slate-500); font-size: .875rem; margin-bottom: 1rem; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; }
+        .price { font-size: 1.5rem; font-weight: 700; color: var(--orange-500); }
+        .btn-dark {
+            display: inline-block; background: var(--slate-900); color: var(--white);
+            padding: .5rem 1rem; border-radius: .5rem; transition: background .15s;
+        }
+        .btn-dark:hover { background: var(--slate-800); }
+
+        /* Sobre nosotros */
+        .about { padding: 5rem 0; background: var(--orange-500); color: var(--white); }
+        .about .inner { max-width: 48rem; margin: 0 auto; padding: 0 1rem; text-align: center; }
+        .about h2 { font-size: 1.875rem; font-weight: 700; margin-bottom: 1.5rem; }
+        .about p { font-size: 1.125rem; font-weight: 300; font-style: italic; line-height: 1.625; }
+
+        /* Footer */
+        .footer { padding: 3rem 0; background: var(--slate-900); color: var(--slate-300); }
+        .footer h4 { font-size: 1.25rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; }
+        .footer p, .footer li { font-size: .875rem; }
+        .footer ul li { margin-bottom: .75rem; }
+        .footer ul a { transition: color .15s; }
+        .footer ul a:hover { color: var(--white); }
+        .footer-bottom {
+            text-align: center; margin-top: 3rem; padding-top: 2rem;
+            border-top: 1px solid var(--slate-800); font-size: .75rem; color: var(--slate-500);
+        }
+        .ic-green { color: var(--green-400); margin-right: .5rem; }
+        .ic-pink { color: var(--pink-400); margin-right: .5rem; }
+        .ic-red { color: var(--red-400); margin-right: .5rem; }
+        .ic-blue { color: var(--blue-400); margin-right: .5rem; }
+
+        @media (min-width: 768px) {
+            .grid-3 { grid-template-columns: repeat(3, 1fr); }
+            .hero p { font-size: 1.25rem; }
+        }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 scroll-smooth">
+<body>
 
     <!-- Barra de Navegación -->
-    <nav class="bg-white shadow-sm p-4 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-orange-500 hover:text-orange-600 transition">
-                <i class="fas fa-paw mr-2"></i>Peludos & Felices
-            </a>
-            <a href="#productos" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full font-medium transition shadow-sm">
-                Catálogo
-            </a>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="brand">🐾 Peludos &amp; Felices</a>
+            <a href="#productos" class="btn">Catálogo</a>
         </div>
     </nav>
 
     <!-- Encabezado (Hero Section) -->
-    <header class="bg-orange-100 py-24 text-center">
-        <div class="max-w-4xl mx-auto px-4">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">Todo lo que tu mejor amigo necesita</h1>
-            <p class="text-lg md:text-xl text-slate-600 mb-10">Alimentos, accesorios y mucho amor, a un clic de distancia.</p>
-            <a href="#productos" class="inline-block bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold px-8 py-4 rounded-full shadow-lg transition transform hover:-translate-y-1">
-                🐾 Ver Tienda
-            </a>
+    <header class="hero">
+        <div class="inner">
+            <h1>Todo lo que tu mejor amigo necesita</h1>
+            <p>Alimentos, accesorios y mucho amor, a un clic de distancia.</p>
+            <a href="#productos" class="btn btn-lg">🐾 Ver Tienda</a>
         </div>
     </header>
 
     <!-- Beneficios -->
-    <section class="py-16 bg-white">
-        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div class="p-6 rounded-2xl hover:bg-slate-50 transition">
-                <i class="fas fa-truck text-4xl text-orange-500 mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Envíos a Domicilio</h3>
-                <p class="text-slate-600">Entregas rápidas en la zona sur para que a tu mascota no le falte nada.</p>
+    <section class="benefits">
+        <div class="container grid-3">
+            <div class="benefit">
+                <div class="icon">🚚</div>
+                <h3>Envíos a Domicilio</h3>
+                <p>Entregas rápidas en la zona sur para que a tu mascota no le falte nada.</p>
             </div>
-            <div class="p-6 rounded-2xl hover:bg-slate-50 transition">
-                <i class="fas fa-star text-4xl text-orange-500 mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Calidad Premium</h3>
-                <p class="text-slate-600">Trabajamos con las mejores marcas de nutrición y cuidado animal.</p>
+            <div class="benefit">
+                <div class="icon">⭐</div>
+                <h3>Calidad Premium</h3>
+                <p>Trabajamos con las mejores marcas de nutrición y cuidado animal.</p>
             </div>
-            <div class="p-6 rounded-2xl hover:bg-slate-50 transition">
-                <i class="fas fa-credit-card text-4xl text-orange-500 mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Múltiples Pagos</h3>
-                <p class="text-slate-600">Aceptamos efectivo, transferencias y tarjetas (Mercado Pago).</p>
+            <div class="benefit">
+                <div class="icon">💳</div>
+                <h3>Múltiples Pagos</h3>
+                <p>Aceptamos efectivo, transferencias y tarjetas (Mercado Pago).</p>
             </div>
         </div>
     </section>
 
     <!-- Productos Destacados -->
-    <section id="productos" class="py-20 bg-slate-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Productos Destacados</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">Productos Destacados</h2>
+            <div class="grid-3">
                 <!-- Tarjeta 1 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
-                    <div class="h-56 bg-slate-100 flex items-center justify-center">
-                        <!-- Aquí puedes poner la etiqueta <img> de tu producto real -->
-                        <i class="fas fa-dog text-6xl text-slate-300"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">Alimento Premium Adulto (15kg)</h3>
-                        <p class="text-slate-500 text-sm mb-4">Nutrición completa para el día a día. Alta digestibilidad para razas medianas y grandes.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-orange-500">$45.000</span>
-                            <a href="https://wa.me/5491100000000?text=Hola,%20quiero%20el%20Alimento%20Premium" target="_blank" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Comprar</a>
+                <div class="card">
+                    <div class="card-media">🐕</div>
+                    <div class="card-body">
+                        <h3>Alimento Premium Adulto (15kg)</h3>
+                        <p class="desc">Nutrición completa para el día a día. Alta digestibilidad para razas medianas y grandes.</p>
+                        <div class="card-footer">
+                            <span class="price">$45.000</span>
+                            <a href="https://wa.me/541161079845?text=Hola,%20quiero%20el%20Alimento%20Premium" target="_blank" class="btn-dark">Comprar</a>
                         </div>
                     </div>
                 </div>
                 <!-- Tarjeta 2 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
-                    <div class="h-56 bg-slate-100 flex items-center justify-center">
-                        <i class="fas fa-cat text-6xl text-slate-300"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">Torre Rascador (3 niveles)</h3>
-                        <p class="text-slate-500 text-sm mb-4">Diversión y descanso para evitar que arañen los muebles. Forrado en peluche suave.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-orange-500">$32.000</span>
-                            <a href="https://wa.me/5491100000000?text=Hola,%20quiero%20el%20Rascador" target="_blank" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Comprar</a>
+                <div class="card">
+                    <div class="card-media">🐈</div>
+                    <div class="card-body">
+                        <h3>Torre Rascador (3 niveles)</h3>
+                        <p class="desc">Diversión y descanso para evitar que arañen los muebles. Forrado en peluche suave.</p>
+                        <div class="card-footer">
+                            <span class="price">$32.000</span>
+                            <a href="https://wa.me/541161079845?text=Hola,%20quiero%20el%20Rascador" target="_blank" class="btn-dark">Comprar</a>
                         </div>
                     </div>
                 </div>
                 <!-- Tarjeta 3 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
-                    <div class="h-56 bg-slate-100 flex items-center justify-center">
-                        <i class="fas fa-bed text-6xl text-slate-300"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2">Cama Antiestrés (Talle M)</h3>
-                        <p class="text-slate-500 text-sm mb-4">Base impermeable, súper suave y fácil de lavar en lavarropas. Varios colores.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-orange-500">$18.500</span>
-                            <a href="https://wa.me/5491100000000?text=Hola,%20quiero%20la%20Cama" target="_blank" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Comprar</a>
+                <div class="card">
+                    <div class="card-media">🛏️</div>
+                    <div class="card-body">
+                        <h3>Cama Antiestrés (Talle M)</h3>
+                        <p class="desc">Base impermeable, súper suave y fácil de lavar en lavarropas. Varios colores.</p>
+                        <div class="card-footer">
+                            <span class="price">$18.500</span>
+                            <a href="https://wa.me/541161079845?text=Hola,%20quiero%20la%20Cama" target="_blank" class="btn-dark">Comprar</a>
                         </div>
                     </div>
                 </div>
@@ -108,41 +205,45 @@
     </section>
 
     <!-- Sobre Nosotros -->
-    <section class="py-20 bg-orange-500 text-white">
-        <div class="max-w-3xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-6">Pasión por los animales</h2>
-            <p class="text-lg md:text-xl font-light italic leading-relaxed">
-                "Hola, soy Germán. Sabemos que las mascotas son un integrante fundamental de la familia. Por eso, seleccionamos cuidadosamente cada producto para asegurar su salud, comodidad y felicidad. Te asesoramos de manera personalizada para que encuentres exactamente lo que tu compañero de cuatro patas necesita."
-            </p>
+    <section class="about">
+        <div class="inner">
+            <h2>Pasión por los animales</h2>
+            <p>"Hola, soy Germán. Sabemos que las mascotas son un integrante fundamental de la familia. Por eso, seleccionamos cuidadosamente cada producto para asegurar su salud, comodidad y felicidad. Te asesoramos de manera personalizada para que encuentres exactamente lo que tu compañero de cuatro patas necesita."</p>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-300 py-12">
-        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer class="footer">
+        <div class="container grid-3">
             <div>
-                <h4 class="text-xl font-bold text-white mb-4"><i class="fas fa-paw mr-2 text-orange-500"></i>Peludos & Felices</h4>
-                <p class="text-sm">Todo para tu mascota, con el mejor asesoramiento y atención garantizada.</p>
+                <h4>🐾 Peludos &amp; Felices</h4>
+                <p>Todo para tu mascota, con el mejor asesoramiento y atención garantizada.</p>
             </div>
             <div>
-                <h4 class="text-xl font-bold text-white mb-4">Contacto Directo</h4>
-                <ul class="space-y-3 text-sm">
-                    <li><a href="#" class="hover:text-white transition"><i class="fab fa-whatsapp w-6 text-green-400"></i> +54 9 11 0000-0000</a></li>
-                    <li><a href="#" class="hover:text-white transition"><i class="fab fa-instagram w-6 text-pink-400"></i> @TuTiendaMascotas</a></li>
+                <h4>Contacto Directo</h4>
+                <ul>
+                    <li><a href="#"><span class="ic-green">💬</span> +54 9 11 0000-0000</a></li>
+                    <li><a href="#"><span class="ic-pink">📷</span> @TuTiendaMascotas</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-xl font-bold text-white mb-4">Punto de Retiro</h4>
-                <ul class="space-y-3 text-sm">
-                    <li><i class="fas fa-map-marker-alt w-6 text-red-400"></i> Burzaco, Buenos Aires</li>
-                    <li><i class="fas fa-clock w-6 text-blue-400"></i> Lunes a Sábados - 9:00 a 18:00 hs</li>
+                <h4>Punto de Retiro</h4>
+                <ul>
+                    <li><span class="ic-red">📍</span> Burzaco, Buenos Aires</li>
+                    <li><span class="ic-blue">🕐</span> Lunes a Sábados - 9:00 a 18:00 hs</li>
                 </ul>
             </div>
         </div>
-        <div class="text-center mt-12 border-t border-slate-800 pt-8 text-xs text-slate-500">
-            <p>&copy; 2026 Peludos & Felices. Todos los derechos reservados.</p>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Peludos &amp; Felices. Todos los derechos reservados.</p>
         </div>
     </footer>
 
+    <script>
+        const WHATSAPP_NUMERO = "541161079845";
+        document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+            a.setAttribute('href', a.getAttribute('href').replace(/wa\.me(\/\d+)?/, `wa.me/${WHATSAPP_NUMERO}`));
+        });
+    </script>
 </body>
 </html>

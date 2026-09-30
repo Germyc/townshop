@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Petshop Huellitas - Todo para tu mascota</title>
+    <meta name="description" content="Petshop Huellitas: alimento, accesorios y cuidado para tu mascota. Envíos en zona y atención personalizada." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Petshop Huellitas - Todo para tu mascota" />
+    <meta property="og:description" content="Alimento, accesorios y cuidado para tu mascota con envío en zona." />
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background-color: #f0fdf4; color: #1e293b; padding-bottom: 80px; }
@@ -14,6 +18,7 @@
         .servicio { display: flex; align-items: center; gap: 15px; }
         .btn-wsp { background-color: #25d366; color: white; text-align: center; display: block; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
     </style>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
 <body>
 
@@ -61,5 +66,11 @@
         </div>
     </div>
 
+    <script>
+        const WHATSAPP_NUMERO = "541161079845";
+        document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+            a.setAttribute('href', a.getAttribute('href').replace(/wa\.me(\/\d+)?/, `wa.me/${WHATSAPP_NUMERO}`));
+        });
+    </script>
 </body>
 </html>

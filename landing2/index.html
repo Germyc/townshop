@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panadería El Maná - Delicias Artesanales</title>
+    <meta name="description" content="Panadería El Maná: pan y facturas artesanales horneados el mismo día. Consultá precios y hacé tu pedido por WhatsApp." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Panadería El Maná - Delicias Artesanales" />
+    <meta property="og:description" content="Pan y facturas artesanales horneados el mismo día. Pedidos por WhatsApp." />
     <style>
         :root {
             --brand-dark: #451a03;
@@ -96,12 +100,13 @@
             border: 1px solid #f1f5f9;
         }
     </style>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
 <body>
 
     <!-- Encabezado con imagen integrada -->
     <div class="hero-banner">
-        <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877" alt="Panes artesanales recién salidos">
+        <img src="assets/panes.jpg" alt="Panes artesanales recién salidos">
         <div class="hero-overlay"></div>
         <div class="brand-header">
             <h1>Panadería El Maná</h1>
@@ -115,7 +120,7 @@
         
         <div class="grid-products">
             <div class="product-strip">
-                <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877" alt="Facturas">
+                <img src="assets/panes.jpg" alt="Facturas">
                 <div class="product-details">
                     <h4>Facturas Artesanales</h4>
                     <p>Manteca y grasa hechas en el día</p>
@@ -123,8 +128,8 @@
             </div>
 
             <div class="product-strip">
-                <!-- <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877" alt="Pan Casero"> -->
-                <img src="https://images.unsplash.com/photo-1556471013-0001958d2f12" alt="Pan Casero">
+                <!-- <img src="assets/panes.jpg" alt="Pan Casero"> -->
+                <img src="assets/pan-campo.jpg" alt="Pan Casero">
                 <div class="product-details">
                     <h4>Pan de Campo y Mignon</h4>
                     <p>Crocante y sin aditivos artificiales</p>
@@ -142,5 +147,11 @@
         </div>
     </div>
 
+    <script>
+        const WHATSAPP_NUMERO = "541161079845";
+        document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+            a.setAttribute('href', a.getAttribute('href').replace(/wa\.me(\/\d+)?/, `wa.me/${WHATSAPP_NUMERO}`));
+        });
+    </script>
 </body>
 </html>

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espacio Premium - Experiencia Gourmet</title>
+    <meta name="description" content="Espacio Premium: experiencia gourmet con productos seleccionados. Descubrí el catálogo y reservá por WhatsApp." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Espacio Premium - Experiencia Gourmet" />
+    <meta property="og:description" content="Experiencia gourmet con productos seleccionados. Reservá por WhatsApp." />
     <style>
         :root {
             --bg-dark: #090d16;
@@ -123,6 +127,7 @@
 
         .footer-text { text-align: center; margin-top: 30px; font-size: 12px; color: #475569; }
     </style>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
 <body>
 
@@ -136,7 +141,7 @@
         
         <!-- Hero Section -->
         <header class="hero">
-            <img src="https://plus.unsplash.com/premium_photo-1661438404948-3f90203f5a39" alt="Showroom Premium">
+            <img src="assets/showroom.jpg" alt="Showroom Premium">
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <span class="tag">Exclusivo & Natural</span>
@@ -163,7 +168,7 @@
                 <p style="margin-bottom: 15px;">Lo más buscado por los vecinos:</p>
                 
                 <div class="product-row">
-                    <img src="https://plus.unsplash.com/premium_photo-1668677227454-213252229b73" alt="Frutos Secos Mix">
+                    <img src="assets/frutos-secos.jpg" alt="Frutos Secos Mix">
                     <div class="product-info">
                         <h4>Mix Frutos Secos Energy</h4>
                         <p>Almendras, castañas, nueces y pasas premium</p>
@@ -171,7 +176,7 @@
                 </div>
 
                 <div class="product-row">
-                    <img src="https://images.unsplash.com/photo-1654515722385-c684c5331c04" alt="Harinas Orgánicas">
+                    <img src="assets/harinas.jpg" alt="Harinas Orgánicas">
                     <div class="product-info">
                         <h4>Miel Orgánica Pura</h4>
                         <p>De pradera, 100% cruda y natural</p>
@@ -197,5 +202,11 @@
 
     </div>
 
+    <script>
+        const WHATSAPP_NUMERO = "541161079845";
+        document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+            a.setAttribute('href', a.getAttribute('href').replace(/wa\.me(\/\d+)?/, `wa.me/${WHATSAPP_NUMERO}`));
+        });
+    </script>
 </body>
 </html>

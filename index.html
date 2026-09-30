@@ -151,6 +151,7 @@
 			.preview { height: 220px; }
 		}
 	</style>
+	<link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
 	<main>
@@ -164,7 +165,7 @@
 		</nav>
 
 		<footer class="qr-footer">
-			<a class="qr-button" href="c_digos_qr.html">Abrir códigos QR</a>
+			<a class="qr-button" href="codigos-qr.html">Abrir códigos QR</a>
 		</footer>
 	</main>
 
@@ -194,23 +195,24 @@
 			}
 		}
 
+		async function findLandings(pattern) {
+			const found = [];
+			for (let number = 1; number <= maximumLandings; number += 1) {
+				const path = pattern.path(number);
+				if (!(await landingExists(path))) break;
+				found.push({ path, label: pattern.label(number) });
+			}
+			return found;
+		}
+
 		async function loadLandings() {
 			const patterns = [
 				{ path: (number) => `landing${number}/index.html`, label: (number) => `Landing ${number}` },
 				{ path: (number) => `landing-demos/landing-${number}/index.html`, label: (number) => `Demo Almacén ${number}` }
 			];
 
-			const landings = await Promise.all(patterns.flatMap((pattern) =>
-				Array.from({ length: maximumLandings }, (_, index) => index + 1)
-					.map(async (number) => {
-						const path = pattern.path(number);
-						return await landingExists(path)
-							? { path, label: pattern.label(number) }
-							: null;
-					})
-			));
-
-			landings.filter(Boolean).forEach((item, index) => {
+			const groups = await Promise.all(patterns.map(findLandings));
+			groups.flat().forEach((item, index) => {
 				landingGrid.appendChild(createLandingCard(index + 1, item.path, item.label));
 			});
 		}

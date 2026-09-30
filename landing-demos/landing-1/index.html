@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tienda de barrio con envíos a 10 cuadras, abierta todos los días" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="Almacén Doña Rosa — Tu barrio, tu almacén" />
   <meta property="og:description" content="Tienda de barrio con envíos a 10 cuadras, abierta todos los días" />
   <meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEyMCAxMDAiIHhtbG5zPSJodHRwOi8vd3dvcMuZmFzdGF0aWNvLmNvbSI+PHBhdGggZD0iTTI1IDEyaDEwYy0xNSAwLTE2LTIuNS0xMWMtMTUuNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xMGMwLTE1LTE1LTE1LTE1LTE1LTE1LTE1LTE1LTE1LTE1IiBjbGFzcz0iQyIgcG9pbnRtb3duZXI9IjAgMCA2MiA2MiIgZmlsbD0icmVkIiBzdHJva2U9IiNGRkYiPjx0ZXh0IHg9IjIwIiB5PSIyNSIgc3R5bGU9ImhtbOi1o2VzIj48dGV4dCB4PSI1MiIeI3R5cGU9ImhlbHAtd2lkdGgiIHN0eWxlPSJkZWZzLWxlZGdlcjogY2VudHJhbCwgY2VudHJhbChub25lKXogPjx0ZXh0IHg9IjUyIiB5PSI1MiIgc3R5bGU9ImhtbC13aWR0aCIgc3R5bGU9IChzdHJva2UgaW50NjQ7IGluc3bdOjgpJmFzdHJyYW5uZXJfdG9fcmVzZW9yeTsgZGVmZWN0IHwgZW5kc3dpdGNoIHwgb30gICIiIC8+PC90ZXh0Pjwvc3ZnPg==" />
@@ -117,6 +119,7 @@
       .whatsapp-btn { padding: 1rem; border-radius: 50%; }
     }
   </style>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 </head>
 <body>
   <header>
@@ -168,7 +171,7 @@
 
   <a
     class="whatsapp-btn"
-    href="https://wa.me/5491112345678?text=Hola%20Do%C3%B1a%20Rosa%2C%20quiero%20hacer%20una%20consulta"
+    href="https://wa.me/541161079845?text=Hola%20Do%C3%B1a%20Rosa%2C%20quiero%20hacer%20una%20consulta"
     target="_blank"
     rel="noopener"
     aria-label="Contactar por WhatsApp">
@@ -181,5 +184,12 @@
   <footer>
     © 2025 Almacén Doña Rosa — Hecho con cariño en el barrio
   </footer>
+
+  <script>
+    const WHATSAPP_NUMERO = "541161079845";
+    document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+      a.setAttribute('href', a.getAttribute('href').replace(/wa\.me(\/\d+)?/, `wa.me/${WHATSAPP_NUMERO}`));
+    });
+  </script>
 </body>
 </html>

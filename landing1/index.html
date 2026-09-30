@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Petshop Huellitas - Estilo Bento Premium</title>
+    <meta name="description" content="Petshop Huellitas: cuidado premium para tu mascota. Horarios, envíos gratis y pedidos por WhatsApp en Adrogué." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Petshop Huellitas - Estilo Bento Premium" />
+    <meta property="og:description" content="Cuidado premium para tu mascota. Envíos gratis en zona y pedidos por WhatsApp." />
     <style>
         :root {
             --bg-main: #f8fafc;
@@ -75,6 +79,7 @@
             box-shadow: 0 10px 15px -3px rgba(37,211,102,0.3);
         }
     </style>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
 <body>
 
@@ -87,7 +92,7 @@
 
         <!-- Imagen de Portada -->
         <div class="img-card">
-            <img src="https://images.unsplash.com/photo-1779896412071-bf3160aad19e" alt="Mascotas felices">
+            <img src="assets/mascotas.jpg" alt="Mascotas felices">
         </div>
 
         <!-- Bloque Izquierdo: Horarios -->
@@ -116,5 +121,11 @@
         </a>
     </div>
 
+    <script>
+        const WHATSAPP_NUMERO = "541161079845";
+        document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+            a.setAttribute('href', a.getAttribute('href').replace(/wa\.me(\/\d+)?/, `wa.me/${WHATSAPP_NUMERO}`));
+        });
+    </script>
 </body>
 </html>

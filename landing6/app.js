@@ -18,7 +18,7 @@ const db = getDatabase(app);
 
 let productosGlobales = [];
 let carrito = [];
-const numeroComercio = "5491123456789"; 
+const numeroComercio = "541161079845";
 
 // 1. Escuchar la base de datos en tiempo real
 const idCliente = "panaderia-el-sol"; 

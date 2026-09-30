@@ -68,6 +68,7 @@
             text-decoration: underline;
         }
     </style>
+	<link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
 
@@ -93,11 +94,21 @@
 
         async function landingExists(path) {
             try {
-                const response = await fetch(path, { cache: 'no-store' });
+                const response = await fetch(path, { method: 'HEAD', cache: 'no-store' });
                 return response.ok;
             } catch (error) {
                 return false;
             }
+        }
+
+        async function findLandings(pattern) {
+            const found = [];
+            for (let number = 1; number <= maximumLandings; number += 1) {
+                const path = pattern.path(number);
+                if (!(await landingExists(path))) break;
+                found.push({ path, label: pattern.label(number) });
+            }
+            return found;
         }
 
         async function loadQrCodes() {
@@ -106,17 +117,8 @@
                 { path: (number) => `landing-demos/landing-${number}/index.html`, label: (number) => `Demo Almacén ${number}` }
             ];
 
-            const landings = await Promise.all(patterns.flatMap((pattern) =>
-                Array.from({ length: maximumLandings }, (_, index) => index + 1)
-                    .map(async (number) => {
-                        const path = pattern.path(number);
-                        return await landingExists(path)
-                            ? { path, label: pattern.label(number) }
-                            : null;
-                    })
-            ));
-
-            landings.filter(Boolean).forEach((landing) => {
+            const groups = await Promise.all(patterns.map(findLandings));
+            groups.flat().forEach((landing) => {
                 qrContainer.appendChild(createQrCard(landing));
             });
         }

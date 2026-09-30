@@ -1,0 +1,15 @@
+# Windows
+*:Zone.Identifier
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+
+# Editores
+*.swp
+.idea/
+.vscode/
+
+# Node
+node_modules/
