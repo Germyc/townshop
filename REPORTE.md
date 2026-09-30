@@ -61,7 +61,14 @@ Base desde GitHub: `875b7cb` (sync con fast-forward + resolución de stash/confl
    - `admin.js` (lista "Mis Productos"): miniatura `.producto-thumb` (52px, `object-fit: cover`) junto al nombre; `onerror` oculta la miniatura si la URL falla o está vacía (la fila no se rompe).
    - CSS en `admin.html`: `.producto-main` (flex) y `.precio-verde`.
 
-10. **Verificación**
+10. **Admin: preview en vivo del campo de imagen**
+   - `admin.html`: bloque `#img-preview-wrap` + `#img-preview` + `#img-preview-error` bajo el input, con hint de uso (URL o ruta relativa).
+   - `admin.js`: `actualizarPreview(valor)` ligada al `input`, a `editar()` y a `limpiarFormulario()`. Si la imagen falla → se oculta y aparece "No se pudo cargar la imagen...".
+   - **Rutas locales: sí funcionan** — basta con que el archivo exista en el sitio (ej.: `assets/pan.jpg` en `landing6/assets/`); se resuelve relativo a la página. *Ojo: si en producción el admin se muda a una URL privada, la ruta relativa dejaría de resolverse en el preview (la tienda seguiría bien); ahí conviene URL completa.*
+   - Verificado: URL externa ✓, ruta relativa ✓ (`../favicon.svg`), ruta inexistente → error ✓, vacío → oculto ✓, `editar()` ✓. `node --check` OK, cero errores de consola.
+   - Nota: las capturas repetidas del mismo archivo PNG pueden verse viejas (caché del harness); usar nombres únicos.
+
+11. **Verificación**
     - Playwright desktop + móvil: consola sin errores, explorador muestra 9 landings, página QR con 9 cards, landing5 con las 3 fotos OK, flujo tienda→admin→tienda OK, lista del admin con miniaturas OK (imagen válida visible; rota/vacía oculta).
 
 ## Decisiones del usuario (no reabrir)

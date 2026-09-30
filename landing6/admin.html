@@ -77,8 +77,18 @@
             <label>Descripción corta:</label>
             <input type="text" id="prod-desc" placeholder="Detalle del producto">
             
-            <label>URL de la Imagen (Opcional):</label>
-            <input type="text" id="prod-img" placeholder="https://...">
+            <label>Imagen del producto (URL o archivo local):</label>
+            <input type="text" id="prod-img" placeholder="https://... o assets/pan.jpg">
+            <p style="color:#64748b; font-size:12px; margin-top:-8px; margin-bottom:12px;">
+                Podés pegar una URL completa o, si la foto está en la carpeta del sitio, escribir solo la ruta relativa (ej.: <code>assets/pan.jpg</code>).
+            </p>
+
+            <div id="img-preview-wrap" style="display: none; margin-bottom: 15px;">
+                <img id="img-preview" alt="Vista previa del producto" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc;">
+                <p id="img-preview-error" style="display: none; color: #ef4444; font-size: 12px; margin-top: 6px;">
+                    No se pudo cargar la imagen. Revisá la URL o el nombre del archivo.
+                </p>
+            </div>
 
             <button class="btn-primary" id="btn-guardar" style="background: #10b981;">Guardar Producto</button>
         </div>

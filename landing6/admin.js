@@ -118,6 +118,34 @@ document.getElementById('btn-guardar').addEventListener('click', () => {
     }
 });
 
+// --- 3. VISTA PREVIA DE IMAGEN ---
+
+const inputImg = document.getElementById('prod-img');
+const previewWrap = document.getElementById('img-preview-wrap');
+const previewImg = document.getElementById('img-preview');
+const previewError = document.getElementById('img-preview-error');
+
+// Acepta URL completa (https://...) o ruta relativa (assets/pan.jpg)
+function actualizarPreview(valor) {
+    valor = (valor || '').trim();
+    if (!valor) {
+        previewWrap.style.display = 'none';
+        previewImg.removeAttribute('src');
+        return;
+    }
+    previewWrap.style.display = 'block';
+    previewError.style.display = 'none';
+    previewImg.style.display = 'block';
+    previewImg.src = valor;
+}
+
+previewImg.addEventListener('error', () => {
+    previewImg.style.display = 'none';
+    previewError.style.display = 'block';
+});
+
+inputImg.addEventListener('input', () => actualizarPreview(inputImg.value));
+
 // Funciones globales para botones dinámicos (Editar/Borrar)
 window.borrar = function(id) {
     if(confirm("¿Seguro que quieres borrar este producto?")) {
@@ -133,6 +161,7 @@ window.editar = function(id, nombre, precio, categoria, desc, img) {
     document.getElementById('prod-categoria').value = categoria;
     document.getElementById('prod-desc').value = desc;
     document.getElementById('prod-img').value = img;
+    actualizarPreview(img);
     window.scrollTo(0, 0);
 }
 
@@ -143,4 +172,5 @@ function limpiarFormulario() {
     document.getElementById('prod-precio').value = '';
     document.getElementById('prod-desc').value = '';
     document.getElementById('prod-img').value = '';
+    actualizarPreview('');
 }
