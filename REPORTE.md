@@ -20,6 +20,7 @@
 |---|---|
 | `0cfd909` | mejoras: SEO, favicon, assets locales, landing5 sin dependencias (22 archivos, +319/−125) |
 | `9824b9f` | landing5: fotos de producto reemplazan emojis en tarjetas |
+| `5bea4c8` | docs: reporte de sesión para continuidad desde otra terminal/agente |
 
 Base desde GitHub: `875b7cb` (sync con fast-forward + resolución de stash/conflictos, árbol limpio).
 
@@ -50,8 +51,14 @@ Base desde GitHub: `875b7cb` (sync con fast-forward + resolución de stash/confl
    - Íconos de beneficios/UI siguen siendo emoji (decisión "opción B" del usuario).
    - **Productos: emoji → foto real** (último commit): `landing5/assets/{alimento-premium,torre-rascador,cama-antiestres}.jpg`, CSS `.card-media` con `object-fit: cover` + zoom al hover, `loading="lazy"` y `width/height`.
 
-8. **Verificación**
-   - Playwright desktop + móvil: consola sin errores, explorador muestra 9 landings, página QR con 9 cards, landing5 con las 3 fotos OK.
+8. **Admin en landing6 (demo)**
+   - Footer discreto en `landing6/index.html` con enlace "⚙️ Panel de administración (demo)" → `admin.html`.
+   - `admin.html`: enlace "← Volver a la tienda" + nota "Demo pública. En producción este panel se sirve en una URL privada, fuera del sitio."
+   - CSS `.footer-demo` en `landing6/estilos.css`.
+   - **Pendiente de producción**: mover el admin fuera del sitio y quitar el footer/enlace (el usuario dijo que en producción queda aparte, acceso privado).
+
+9. **Verificación**
+   - Playwright desktop + móvil: consola sin errores, explorador muestra 9 landings, página QR con 9 cards, landing5 con las 3 fotos OK, flujo tienda→admin→tienda OK.
 
 ## Decisiones del usuario (no reabrir)
 
@@ -82,6 +89,7 @@ git push origin main   # Vercel despliega solo
 
 No hay tareas activas bloqueadas. Ideas abiertas para otro día:
 
+- [ ] **Producción**: extraer el admin de `landing6/` a sitio privado y eliminar el footer/enlace de muestra.
 - [ ] Revisar si el footer de `landing5` muestra teléfono placeholder `+54 9 11 0000-0000` (el botón Comprar sí usa `541161079845` vía script).
 - [ ] Auditar las demás landings: ¿alguna tarjeta/ícono aún con placeholder o número viejo?
 - [ ] `og:image` en las landings (hoy solo hay og:type/title/description).
