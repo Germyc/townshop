@@ -74,8 +74,12 @@ function cargarProductos() {
             const div = document.createElement('div');
             div.className = 'producto-admin';
             div.innerHTML = `
-                <div>
-                    <strong>${p.nombre}</strong> <br> <span style="color:green;">$${p.precio}</span>
+                <div class="producto-main">
+                    <img class="producto-thumb" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.style.visibility='hidden'">
+                    <div>
+                        <strong>${p.nombre}</strong>
+                        <span class="precio-verde">$${p.precio}</span>
+                    </div>
                 </div>
                 <div>
                     <button class="btn-edit" onclick="editar('${key}', '${p.nombre}', '${p.precio}', '${p.categoria}', '${p.descripcion}', '${p.imagen}')">Editar</button>

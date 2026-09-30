@@ -19,7 +19,11 @@
         .btn-edit { background: #eab308; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
         
         /* Lista de productos */
-        .producto-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding: 10px 0; }
+        .producto-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding: 10px 0; gap: 10px; }
+        .producto-main { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .producto-thumb { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; background: #f1f5f9; flex-shrink: 0; border: 1px solid #e2e8f0; }
+        .producto-admin strong { display: block; }
+        .producto-admin .precio-verde { color: green; }
         
         /* Pantallas */
         #pantalla-dashboard { display: none; }
