@@ -171,36 +171,33 @@
 	<script>
 		const landingGrid = document.querySelector('.landing-grid');
 
-		function createLandingCard(number) {
-			const path = `landing${number}/index.html`;
+		function createLandingCard(number, path, label) {
 			const card = document.createElement('article');
 			card.className = 'landing-card';
 			card.innerHTML = `
-				<iframe class="preview" src="${path}" title="Preview de Landing ${number}" loading="lazy"></iframe>
+				<iframe class="preview" src="${path}" title="Preview de ${label}" loading="lazy"></iframe>
 				<a class="landing-link" href="${path}">
 					<span class="number">${String(number).padStart(2, '0')}</span>
-					<h2>Landing ${number}</h2>
+					<h2>${label}</h2>
 				</a>`;
 			return card;
 		}
 
-		async function loadLandings() {
-			for (let number = 1; ; number += 1) {
-				const path = `landing${number}/index.html`;
-				let response;
+		const landings = [
+			{ path: 'landing1/index.html', label: 'Landing 1' },
+			{ path: 'landing2/index.html', label: 'Landing 2' },
+			{ path: 'landing3/index.html', label: 'Landing 3' },
+			{ path: 'landing4/index.html', label: 'Landing 4' },
+			{ path: 'landing5/index.html', label: 'Landing 5' },
+			{ path: 'landing6/index.html', label: 'Landing 6' },
+			{ path: 'landing-demos/landing-1/index.html', label: 'Demo Almacén 1' },
+			{ path: 'landing-demos/landing-2/index.html', label: 'Demo Almacén 2' },
+			{ path: 'landing-demos/landing-3/index.html', label: 'Demo Almacén 3' }
+		];
 
-				try {
-					response = await fetch(path);
-				} catch (error) {
-					break;
-				}
-
-				if (!response.ok) break;
-				landingGrid.appendChild(createLandingCard(number));
-			}
-		}
-
-		loadLandings();
+		landings.forEach((item, index) => {
+			landingGrid.appendChild(createLandingCard(index + 1, item.path, item.label));
+		});
 	</script>
 </body>
 </html>

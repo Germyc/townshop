@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="Almacén Doña Rosa — Tu barrio, tu almacén" />
+  <meta property="og:description" content="Tienda de barrio con envíos a 10 cuadras, abierta todos los días" />
+  <meta property="og:image" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEyMCAxMDAiIHhtbG5zPSJodHRwOi8vd3dvcMuZmFzdGF0aWNvLmNvbSI+PHBhdGggZD0iTTI1IDEyaDEwYy0xNSAwLTE2LTIuNS0xMWMtMTUuNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xNS0xMGMwLTE1LTE1LTE1LTE1LTE1LTE1LTE1LTE1LTE1LTE1IiBjbGFzcz0iQyIgcG9pbnRtb3duZXI9IjAgMCA2MiA2MiIgZmlsbD0icmVkIiBzdHJva2U9IiNGRkYiPjx0ZXh0IHg9IjIwIiB5PSIyNSIgc3R5bGU9ImhtbOi1o2VzIj48dGV4dCB4PSI1MiIeI3R5cGU9ImhlbHAtd2lkdGgiIHN0eWxlPSJkZWZzLWxlZGdlcjogY2VudHJhbCwgY2VudHJhbChub25lKXogPjx0ZXh0IHg9IjUyIiB5PSI1MiIgc3R5bGU9ImhtbC13aWR0aCIgc3R5bGU9IChzdHJva2UgaW50NjQ7IGluc3bdOjgpJmFzdHJyYW5uZXJfdG9fcmVzZW9yeTsgZGVmZWN0IHwgZW5kc3dpdGNoIHwgb30gICIiIC8+PC90ZXh0Pjwvc3ZnPg==" />
+  <title>Almacén Doña Rosa — Tu barrio, tu almacén</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Almacén Doña Rosa",
+    "description": "Tienda de barrio con envíos a 10 cuadras, abierta todos los días",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Siempre Viva 742",
+      "addressLocality": "Springfield",
+      "addressCountry": "AR"
+    },
+    "telephone": "+54 9 11 1234-5678",
+    "openingHours": ["Mo-Sa 08:00-21:00", "Su 09:00-14:00"],
+    "priceRange": "$$"
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-dark: #1b5e20;
+      --accent: #ffb300;
+      --text: #212121;
+      --muted: #616161;
+      --bg: #fafafa;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    header h1 { font-size: 2rem; margin-bottom: .5rem; }
+    header p { opacity: .9; }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      display: grid;
+      gap: 1.5rem;
+    }
+    section {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    section h2 {
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+      padding-bottom: .25rem;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .info-item strong { color: var(--primary-dark); display: block; }
+    .map-container {
+      width: 100%;
+      height: 320px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+    }
+    .map-container iframe { width: 100%; height: 100%; border: 0; }
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #25d366;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37,211,102,.4);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      text-decoration: none;
+      transition: transform .2s;
+    }
+    .whatsapp-btn:hover { transform: scale(1.05); }
+    .whatsapp-btn svg { width: 24px; height: 24px; }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--muted);
+      font-size: .875rem;
+    }
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.5rem; }
+      .whatsapp-btn span { display: none; }
+      .whatsapp-btn { padding: 1rem; border-radius: 50%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Almacén Doña Rosa</h1>
+    <p>Tu barrio, tu almacén de siempre 🛒</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Información</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Dirección</strong>
+          Av. Siempre Viva 742, Springfield
+        </div>
+        <div class="info-item">
+          <strong>Teléfono</strong>
+          +54 9 11 1234-5678
+        </div>
+        <div class="info-item">
+          <strong>Horario</strong>
+          Lun a Sáb: 8:00 – 21:00<br />Dom: 9:00 – 14:00
+        </div>
+        <div class="info-item">
+          <strong>Envíos</strong>
+          Sí, en un radio de 10 cuadras
+        </div>
+        <div class="info-item">
+          <strong>¿Qué vendemos</strong>
+          Yerba, pan, leche, huevos, aceite, fideos, azúcar, queso y más productos de primera necesidad
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ubicación</h2>
+      <div class="map-container">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-58.45%2C-34.62%2C-58.40%2C-34.59&layer=mapnik"
+          loading="lazy"
+          title="Mapa de ubicación">
+        </iframe>
+      </div>
+      <p style="margin-top:.75rem;font-size:.875rem;color:var(--muted)">
+        📍 A 2 cuadras de la plaza principal
+      </p>
+    </section>
+  </main>
+
+  <a
+    class="whatsapp-btn"
+    href="https://wa.me/5491112345678?text=Hola%20Do%C3%B1a%20Rosa%2C%20quiero%20hacer%20una%20consulta"
+    target="_blank"
+    rel="noopener"
+    aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+    <span>Escribinos</span>
+  </a>
+
+  <footer>
+    © 2025 Almacén Doña Rosa — Hecho con cariño en el barrio
+  </footer>
+</body>
+</html>

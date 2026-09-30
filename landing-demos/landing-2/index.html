@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almacén Doña Rosa — Catálogo y Ofertas</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Almacén Doña Rosa",
+    "description": "Catálogo de productos de almacén con ofertas semanales y envíos a 10 cuadras",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Siempre Viva 742",
+      "addressLocality": "Springfield",
+      "addressCountry": "AR"
+    },
+    "telephone": "+54 9 11 1234-5678",
+    "openingHours": ["Mo-Sa 08:00-21:00", "Su 09:00-14:00"],
+    "priceRange": "$$"
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-dark: #1b5e20;
+      --accent: #ffb300;
+      --danger: #d32f2f;
+      --text: #212121;
+      --muted: #616161;
+      --bg: #fafafa;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    header h1 { font-size: 2rem; margin-bottom: .5rem; }
+    header p { opacity: .9; }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .section-title {
+      color: var(--primary-dark);
+      margin: 2rem 0 1rem;
+      font-size: 1.5rem;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+      padding-bottom: .25rem;
+    }
+    .search-box {
+      margin: 1rem 0;
+      display: flex;
+      gap: .5rem;
+    }
+    .search-box input {
+      flex: 1;
+      padding: .6rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: .95rem;
+    }
+    .search-box button {
+      padding: .6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .product-card {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.1);
+    }
+    .product-card .emoji {
+      font-size: 3rem;
+      text-align: center;
+      padding: 1.5rem;
+      background: #f1f8e9;
+    }
+    .product-card .body {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card h3 { font-size: 1.05rem; margin-bottom: .25rem; }
+    .product-card .desc {
+      font-size: .875rem;
+      color: var(--muted);
+      flex: 1;
+      margin-bottom: .5rem;
+    }
+    .product-card .price {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .product-card .old-price {
+      font-size: .875rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-left: .5rem;
+    }
+    .badge-offer {
+      position: absolute;
+      top: .75rem;
+      right: .75rem;
+      background: var(--danger);
+      color: white;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .25rem .6rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    .add-btn {
+      margin-top: .75rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: .6rem;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .add-btn:hover { background: var(--primary-dark); }
+    .add-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--primary);
+      color: white;
+      padding: .75rem 1.25rem;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #25d366; }
+    .toast.error { background: var(--danger); }
+
+    /* Carrito flotante */
+    .cart-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--primary-dark);
+      color: white;
+      padding: .75rem 1rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 -2px 12px rgba(0,0,0,.15);
+      z-index: 100;
+    }
+    .cart-bar.visible { display: flex; }
+    .cart-bar .summary { font-size: .95rem; }
+    .cart-bar .total { font-weight: 700; font-size: 1.1rem; }
+    .cart-bar .actions { display: flex; gap: .5rem; }
+    .cart-bar button {
+      border: none;
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+    .btn-clear { background: transparent; color: white; border: 1px solid white; }
+    .btn-send { background: #25d366; color: white; }
+
+    footer {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      color: var(--muted);
+      font-size: .875rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Almacén Doña Rosa</h1>
+    <p>Tu barrio, tu almacén de siempre 🛒</p>
+  </header>
+
+  <main>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar productos..." oninput="filterProducts()" />
+      <button onclick="clearSearch()">Limpiar</button>
+    </div>
+
+    <h2 class="section-title">🔥 Ofertas de la semana</h2>
+    <div class="products" id="offers"></div>
+
+    <h2 class="section-title">🛍️ Todos los productos</h2>
+    <div class="products" id="catalog"></div>
+  </main>
+
+  <!-- Toast de notificación -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <div class="cart-bar" id="cartBar">
+    <div class="summary">
+      <span id="cartCount">0</span> productos —
+      <span class="total" id="cartTotal">$0</span>
+    </div>
+    <div class="actions">
+      <button class="btn-clear" onclick="clearCart()">Vaciar carrito</button>
+      <button class="btn-send" onclick="sendOrder()">Enviar por WhatsApp</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Almacén Doña Rosa — Hecho con cariño en el barrio
+  </footer>
+
+  <script>
+    // ============================================================
+    // CONFIGURACIÓN
+    // ============================================================
+    const PRODUCTS = [
+      { id: 1, name: "Yerba mate 1kg", desc: "Playadito, despalada", price: 4500, emoji: "🧉", offer: true, oldPrice: 5200 },
+      { id: 2, name: "Pan casero", desc: "Recién horneado, por unidad", price: 1200, emoji: "🍞" },
+      { id: 3, name: "Leche entera 1L", desc: "La Serenísima", price: 1350, emoji: "🥛" },
+      { id: 4, name: "Huevos x12", desc: "De campo, colorados", price: 2800, emoji: "🥚", offer: true, oldPrice: 3200 },
+      { id: 5, name: "Azúcar 1kg", desc: "Ledesma, común", price: 1500, emoji: "🍬" },
+      { id: 6, name: "Aceite girasol 1.5L", desc: "Natura", price: 3800, emoji: "🛢️" },
+      { id: 7, name: "Fideos 500g", desc: "Matarazzo, guiseros", price: 1100, emoji: "🍝" },
+      { id: 8, name: "Queso cremoso 1kg", desc: "Porcionado", price: 6500, emoji: "🧀", offer: true, oldPrice: 7200 }
+    ];
+
+    const WHATSAPP_NUMBER = "5491112345678";
+    const CURRENCY_FORMAT = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
+
+    // ============================================================
+    // ESTADO
+    // ============================================================
+    let cart = {}; // { productId: { quantity: number } }
+    let searchTerm = "";
+
+    // ============================================================
+    // UTILS
+    // ============================================================
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "toast " + type;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function formatPrice(price) {
+      return CURRENCY_FORMAT.format(price);
+    }
+
+    // ============================================================
+    // RENDER
+    // ============================================================
+    function renderProducts() {
+      const offersEl = document.getElementById("offers");
+      const catalogEl = document.getElementById("catalog");
+
+      let offers = PRODUCTS.filter(p => p.offer);
+      let rest = PRODUCTS.filter(p => !p.offer);
+
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        offers = offers.filter(p => p.name.toLowerCase().includes(term));
+        rest = rest.filter(p => p.name.toLowerCase().includes(term));
+      }
+
+      offersEl.innerHTML = offers.map(productCard).join("");
+      catalogEl.innerHTML = rest.map(productCard).join("");
+    }
+
+    function filterProducts() {
+      searchTerm = document.getElementById("searchInput").value.trim();
+      renderProducts();
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      searchTerm = "";
+      renderProducts();
+    }
+
+    function productCard(p) {
+      return `
+        <div class="product-card">
+          ${p.offer ? '<span class="badge-offer">Oferta</span>' : ""}
+          <div class="emoji">${p.emoji}</div>
+          <div class="body">
+            <h3>${p.name}</h3>
+            <p class="desc">${p.desc}</p>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <span class="price">${formatPrice(p.price)}</span>
+              ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ""}
+            </div>
+            <div style="margin-top: .5rem; display: flex; gap: .5rem;">
+              <button class="add-btn" onclick="addToCart(${p.id}, 1)">+1</button>
+              <span class="qty-default" id="qty-${p.id}">1</span>
+              <button class="add-btn" onclick="addToCart(${p.id}, -1)" style="background: #555;">-1</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================================
+    // CARRITO CON GESTIÓN DE CANTIDADES
+    // ============================================================
+    function addToCart(id, delta) {
+      if (!cart[id]) cart[id] = 0;
+      cart[id] += delta;
+
+      // Validaciones
+      if (cart[id] < 1) {
+        delete cart[id];
+        showToast("Mínimo 1 unidad", "error");
+        updateCartBar();
+        return;
+      }
+
+      // Actualizar display de cantidad
+      const qtySpan = document.getElementById(`qty-${id}`);
+      if (qtySpan) qtySpan.textContent = cart[id];
+
+      updateCartBar();
+      showToast(`${cart[id]}x ${PRODUCTS.find(p => p.id === id)?.name || ""} agregado(s)`);
+    }
+
+    function clearCart() {
+      cart = {};
+      updateCartBar();
+    }
+
+    function updateCartBar() {
+      const bar = document.getElementById("cartBar");
+      const count = Object.values(cart).reduce((a, b) => a + b, 0);
+
+      if (count === 0) {
+        bar.classList.remove("visible");
+        return;
+      }
+      bar.classList.add("visible");
+
+      const total = Object.entries(cart).reduce((sum, [id, qty]) => {
+        const p = PRODUCTS.find(x => x.id === Number(id));
+        return sum + (p ? p.price * qty : 0);
+      }, 0);
+
+      document.getElementById("cartCount").textContent = count;
+      document.getElementById("cartTotal").textContent = formatPrice(total);
+    }
+
+    // ============================================================
+    // PEDIDO POR WHATSAPP CON SEGURIDAD
+    // ============================================================
+    function sendOrder() {
+      if (Object.keys(cart).length === 0) return;
+
+      let msg = "Hola! Quiero hacer este pedido:%0A%0A";
+      let total = 0;
+
+      // Construir mensaje ordenado
+      const items = [];
+      for (const [id, qty] of Object.entries(cart)) {
+        const p = PRODUCTS.find(x => x.id === Number(id));
+        if (!p) continue;
+        const subtotal = p.price * qty;
+        total += subtotal;
+        items.push(`${qty}x ${escapeForWhatsApp(p.name)} — ${formatPrice(subtotal)}`);
+      }
+
+      msg += items.join("%0A");
+      msg += `%0ATotal: ${formatPrice(total)}`;
+
+      // URL encode completo para evitar problemas con tildes, &, etc.
+      const encodedMsg = encodeURIComponent(msg);
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`, "_blank");
+    }
+
+    function escapeForWhatsApp(text) {
+      // Reemplazar caracteres especiales que rompen URLs
+      return text
+        .replace(/&/g, "%26")
+        .replace(/>/g, "%3E")
+        .replace(/</g, "%3C")
+        .replace(/"/g, "%22")
+        .replace(/'/g, "'")
+        .replace(/ /g, "%20");
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    renderProducts();
+    updateCartBar();
+  </script>
+</body>
+</html>

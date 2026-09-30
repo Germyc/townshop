@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almacén Doña Rosa — Tienda</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Almacén Doña Rosa",
+    "description": "Tienda online de almacén con pedidos por WhatsApp y pago con MercadoPago",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Siempre Viva 742",
+      "addressLocality": "Springfield",
+      "addressCountry": "AR"
+    },
+    "telephone": "+54 9 11 1234-5678",
+    "openingHours": ["Mo-Sa 08:00-21:00", "Su 09:00-14:00"],
+    "priceRange": "$$",
+    "paymentAccepted": "MercadoPago"
+  }
+  </script>
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-dark: #1b5e20;
+      --accent: #ffb300;
+      --danger: #d32f2f;
+      --info: #1976d2;
+      --text: #212121;
+      --muted: #616161;
+      --bg: #fafafa;
+      --card: #ffffff;
+      --border: #e0e0e0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    header .brand h1 { font-size: 1.25rem; }
+    header .brand p { font-size: .8rem; opacity: .85; }
+    header .admin-actions { display: flex; gap: .5rem; }
+    header button {
+      background: rgba(255,255,255,.15);
+      color: white;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 8px;
+      padding: .5rem .9rem;
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 600;
+      transition: background .2s;
+    }
+    header button:hover { background: rgba(255,255,255,.25); }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .section-title {
+      color: var(--primary-dark);
+      margin: 2rem 0 1rem;
+      font-size: 1.5rem;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+      padding-bottom: .25rem;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .product-card {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.1);
+    }
+    .product-card .emoji {
+      font-size: 3rem;
+      text-align: center;
+      padding: 1.5rem;
+      background: #f1f8e9;
+    }
+    .product-card .body {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card h3 { font-size: 1.05rem; margin-bottom: .25rem; }
+    .product-card .desc {
+      font-size: .875rem;
+      color: var(--muted);
+      flex: 1;
+      margin-bottom: .5rem;
+    }
+    .product-card .price {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .product-card .old-price {
+      font-size: .875rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-left: .5rem;
+    }
+    .badge-offer {
+      position: absolute;
+      top: .75rem;
+      right: .75rem;
+      background: var(--danger);
+      color: white;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .25rem .6rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    .badge-hidden {
+      position: absolute;
+      top: .75rem;
+      left: .75rem;
+      background: var(--muted);
+      color: white;
+      font-size: .7rem;
+      padding: .2rem .5rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+    .add-btn {
+      margin-top: .75rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: .6rem;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      width: 100%;
+    }
+    .add-btn:hover { background: var(--primary-dark); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--primary);
+      color: white;
+      padding: .75rem 1.25rem;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #25d366; }
+    .toast.error { background: var(--danger); }
+
+    /* Carrito flotante */
+    .cart-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--primary-dark);
+      color: white;
+      padding: .75rem 1rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 -2px 12px rgba(0,0,0,.15);
+      z-index: 100;
+      flex-wrap: wrap;
+    }
+    .cart-bar.visible { display: flex; }
+    .cart-bar .summary { font-size: .95rem; }
+    .cart-bar .total { font-weight: 700; font-size: 1.1rem; }
+    .cart-bar .actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .cart-bar button {
+      border: none;
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+    .btn-clear { background: transparent; color: white; border: 1px solid white; }
+    .btn-send { background: #25d366; color: white; }
+    .btn-mp { background: var(--info); color: white; }
+
+    /* Modal admin */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+    }
+    .modal-overlay.visible { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+    .modal h2 {
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .modal .close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      font-size: .875rem;
+      font-weight: 600;
+      margin-bottom: .25rem;
+      color: var(--text);
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: .6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .95rem;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: 2px solid var(--primary);
+      border-color: transparent;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 1rem;
+    }
+    .checkbox-row input { width: auto; }
+    .form-actions {
+      display: flex;
+      gap: .5rem;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+    .form-actions button {
+      padding: .6rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: #eee; color: var(--text); }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: .875rem;
+    }
+    .admin-table th, .admin-table td {
+      padding: .5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .admin-table th { background: #f5f5f5; font-weight: 600; }
+    .admin-table button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: .85rem;
+      padding: .2rem .4rem;
+      border-radius: 4px;
+    }
+    .btn-edit { color: var(--info); }
+    .btn-delete { color: var(--danger); }
+    .btn-toggle { color: var(--muted); }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-weight: 600; }
+    .cart-item-price { font-size: .875rem; color: var(--muted); }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .cart-item-qty button {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-item-qty span { min-width: 20px; text-align: center; }
+
+    .search-box {
+      margin: 1rem 0;
+      display: flex;
+      gap: .5rem;
+    }
+    .search-box input {
+      flex: 1;
+      padding: .6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .95rem;
+    }
+    .search-box button {
+      padding: .6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      color: var(--muted);
+      font-size: .875rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>Almacén Doña Rosa</h1>
+      <p>Tu barrio, tu almacén de siempre 🛒</p>
+    </div>
+    <div class="admin-actions">
+      <button id="loginBtn" onclick="openLogin()">Ingresar como admin</button>
+      <button id="adminPanelBtn" onclick="openAdminPanel()" style="display:none">Panel admin</button>
+      <button id="logoutBtn" onclick="logout()" style="display:none">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="section-title">🛍️ Productos</h2>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar productos..." oninput="filterProducts()" />
+      <button onclick="clearSearch()">Limpiar</button>
+    </div>
+    <div class="products" id="catalog"></div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <div class="cart-bar" id="cartBar">
+    <div class="summary">
+      <span id="cartCount">0</span> productos —
+      <span class="total" id="cartTotal">$0</span>
+    </div>
+    <div class="actions">
+      <button class="btn-clear" onclick="clearCart()">Vaciar</button>
+      <button class="btn-send" onclick="sendOrder()">Pedir por WhatsApp</button>
+      <button class="btn-mp" onclick="payWithMP()">Pagar con MercadoPago</button>
+    </div>
+  </div>
+
+  <!-- Modal carrito -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal" style="max-width:500px">
+      <button class="close" onclick="closeModal('cartModal')">×</button>
+      <h2>Tu carrito</h2>
+      <div id="cartItems"></div>
+      <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+        <strong>Total:</strong>
+        <strong id="cartModalTotal" style="font-size: 1.25rem; color: var(--primary-dark);">$0</strong>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="closeModal('cartModal')">Seguir comprando</button>
+        <button class="btn-primary" onclick="confirmSendOrder()">Confirmar pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal login -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal" style="max-width:400px">
+      <button class="close" onclick="closeModal('loginModal')">×</button>
+      <h2>Ingresar como administrador</h2>
+      <div class="form-group">
+        <label for="loginUser">Usuario</label>
+        <input id="loginUser" type="text" placeholder="admin" />
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Contraseña</label>
+        <input id="loginPass" type="password" placeholder="admin123" />
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="doLogin()">Ingresar</button>
+      </div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">
+        Demo: usuario <strong>admin</strong> / contraseña <strong>admin123</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal admin panel -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal">
+      <button class="close" onclick="closeModal('adminModal')">×</button>
+      <h2>Panel de administración</h2>
+      <div style="display: flex; gap: .5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <button class="btn-primary" style="padding:.6rem 1rem;border:none;border-radius:8px;color:white;font-weight:600;cursor:pointer" onclick="openProductForm()">
+          + Nuevo producto
+        </button>
+        <button class="btn-secondary" style="padding:.6rem 1rem;border:none;border-radius:8px;font-weight:600;cursor:pointer" onclick="resetCatalog()">
+          🔄 Restablecer catálogo demo
+        </button>
+      </div>
+      <div class="search-box" style="margin-top: 0;">
+        <input type="text" id="adminSearchInput" placeholder="Buscar en admin..." oninput="filterAdminTable()" />
+        <button onclick="clearAdminSearch()">Limpiar</button>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Emoji</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Oferta</th>
+            <th>Visible</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal form producto -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal">
+      <button class="close" onclick="closeModal('productModal')">×</button>
+      <h2 id="productFormTitle">Nuevo producto</h2>
+      <input type="hidden" id="prodId" />
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prodName">Nombre</label>
+          <input id="prodName" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="prodEmoji">Emoji</label>
+          <input id="prodEmoji" type="text" placeholder="🍞" maxlength="4" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="prodDesc">Descripción</label>
+        <textarea id="prodDesc" rows="2"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prodPrice">Precio</label>
+          <input id="prodPrice" type="number" min="1" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label for="prodOldPrice">Precio anterior (opcional)</label>
+          <input id="prodOldPrice" type="number" min="0" step="0.01" />
+        </div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="prodOffer" />
+        <label for="prodOffer">Marcar como oferta</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="prodVisible" checked />
+        <label for="prodVisible">Visible en la tienda</label>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="closeModal('productModal')">Cancelar</button>
+        <button class="btn-primary" onclick="saveProduct()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Almacén Doña Rosa — Hecho con cariño en el barrio
+  </footer>
+
+  <script>
+    // ============================================================
+    // CONFIGURACIÓN
+    // ============================================================
+    const WHATSAPP_NUMBER = "5491112345678";
+    const STORAGE_KEY = "almacen_products_v1";
+    const AUTH_KEY = "almacen_auth_v1";
+    const MP_LINK = "https://link.mercadopago.com.ar/tu-link-demo";
+    const CURRENCY_FORMAT = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
+
+    // ============================================================
+    // ESTADO
+    // ============================================================
+    let products = loadProducts();
+    let cart = {};
+    let isAdmin = sessionStorage.getItem(AUTH_KEY) === "true";
+    let searchTerm = "";
+    let adminSearchTerm = "";
+
+    // ============================================================
+    // PERSISTENCIA
+    // ============================================================
+    function loadProducts() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) return JSON.parse(stored);
+      return defaultProducts();
+    }
+
+    function saveProducts() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    }
+
+    function defaultProducts() {
+      return [
+        { id: 1, name: "Yerba mate 1kg", desc: "Playadito, despalada", price: 4500, emoji: "🧉", offer: true, oldPrice: 5200, visible: true },
+        { id: 2, name: "Pan casero", desc: "Recién horneado, por unidad", price: 1200, emoji: "🍞", offer: false, oldPrice: null, visible: true },
+        { id: 3, name: "Leche entera 1L", desc: "La Serenísima", price: 1350, emoji: "🥛", offer: false, oldPrice: null, visible: true },
+        { id: 4, name: "Huevos x12", desc: "De campo, colorados", price: 2800, emoji: "🥚", offer: true, oldPrice: 3200, visible: true },
+        { id: 5, name: "Azúcar 1kg", desc: "Ledesma, común", price: 1500, emoji: "🍬", offer: false, oldPrice: null, visible: true },
+        { id: 6, name: "Aceite girasol 1.5L", desc: "Natura", price: 3800, emoji: "🛢️", offer: false, oldPrice: null, visible: true },
+        { id: 7, name: "Fideos 500g", desc: "Matarazzo, guiseros", price: 1100, emoji: "🍝", offer: false, oldPrice: null, visible: true },
+        { id: 8, name: "Queso cremoso 1kg", desc: "Porcionado", price: 6500, emoji: "🧀", offer: true, oldPrice: 7200, visible: true }
+      ];
+    }
+
+    // ============================================================
+    // UTILS
+    // ============================================================
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "toast " + type;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function formatPrice(price) {
+      return CURRENCY_FORMAT.format(price);
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[c]));
+    }
+
+    // ============================================================
+    // RENDER TIENDA
+    // ============================================================
+    function renderCatalog() {
+      const visible = products.filter(p => p.visible);
+      const filtered = searchTerm
+        ? visible.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        : visible;
+      document.getElementById("catalog").innerHTML = filtered.map(productCard).join("");
+    }
+
+    function productCard(p) {
+      return `
+        <div class="product-card">
+          ${p.offer ? '<span class="badge-offer">Oferta</span>' : ""}
+          ${!p.visible && isAdmin ? '<span class="badge-hidden">Oculto</span>' : ""}
+          <div class="emoji">${p.emoji}</div>
+          <div class="body">
+            <h3>${escapeHtml(p.name)}</h3>
+            <p class="desc">${escapeHtml(p.desc || "")}</p>
+            <div>
+              <span class="price">${formatPrice(p.price)}</span>
+              ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ""}
+            </div>
+            <button class="add-btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterProducts() {
+      searchTerm = document.getElementById("searchInput").value.trim();
+      renderCatalog();
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      searchTerm = "";
+      renderCatalog();
+    }
+
+    // ============================================================
+    // CARRITO
+    // ============================================================
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateCartBar();
+      const p = products.find(x => x.id === id);
+      showToast(`${p ? p.name : "Producto"} agregado al carrito`);
+    }
+
+    function clearCart() {
+      cart = {};
+      updateCartBar();
+      showToast("Carrito vaciado");
+    }
+
+    function updateCartBar() {
+      const bar = document.getElementById("cartBar");
+      const count = Object.values(cart).reduce((a, b) => a + b, 0);
+      if (count === 0) {
+        bar.classList.remove("visible");
+        return;
+      }
+      bar.classList.add("visible");
+      const total = Object.entries(cart).reduce((sum, [id, qty]) => {
+        const p = products.find(x => x.id === Number(id));
+        return sum + (p ? p.price * qty : 0);
+      }, 0);
+      document.getElementById("cartCount").textContent = count;
+      document.getElementById("cartTotal").textContent = formatPrice(total);
+    }
+
+    function sendOrder() {
+      if (Object.keys(cart).length === 0) return;
+      openCartModal();
+    }
+
+    function openCartModal() {
+      const container = document.getElementById("cartItems");
+      const entries = Object.entries(cart);
+
+      if (entries.length === 0) {
+        container.innerHTML = "<p style='color: var(--muted); text-align: center;'>Tu carrito está vacío</p>";
+        document.getElementById("cartModalTotal").textContent = formatPrice(0);
+      } else {
+        container.innerHTML = entries.map(([id, qty]) => {
+          const p = products.find(x => x.id === Number(id));
+          if (!p) return "";
+          return `
+            <div class="cart-item">
+              <div class="cart-item-info">
+                <div class="cart-item-name">${escapeHtml(p.name)}</div>
+                <div class="cart-item-price">${formatPrice(p.price)} c/u</div>
+              </div>
+              <div class="cart-item-qty">
+                <button onclick="updateCartQty(${id}, -1)">−</button>
+                <span>${qty}</span>
+                <button onclick="updateCartQty(${id}, 1)">+</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        const total = entries.reduce((sum, [id, qty]) => {
+          const p = products.find(x => x.id === Number(id));
+          return sum + (p ? p.price * qty : 0);
+        }, 0);
+        document.getElementById("cartModalTotal").textContent = formatPrice(total);
+      }
+
+      openModal("cartModal");
+    }
+
+    function updateCartQty(id, delta) {
+      cart[id] = (cart[id] || 0) + delta;
+      if (cart[id] <= 0) delete cart[id];
+      updateCartBar();
+      openCartModal();
+    }
+
+    function confirmSendOrder() {
+      closeModal("cartModal");
+      sendOrderToWhatsApp();
+    }
+
+    function sendOrderToWhatsApp() {
+      if (Object.keys(cart).length === 0) return;
+      let msg = "Hola! Quiero hacer este pedido:%0A%0A";
+      let total = 0;
+      const items = [];
+      for (const [id, qty] of Object.entries(cart)) {
+        const p = products.find(x => x.id === Number(id));
+        if (!p) continue;
+        const subtotal = p.price * qty;
+        total += subtotal;
+        items.push(`${qty}x ${escapeHtml(p.name)} — ${formatPrice(subtotal)}`);
+      }
+      msg += items.join("%0A");
+      msg += `%0ATotal: ${formatPrice(total)}`;
+      const encodedMsg = encodeURIComponent(msg);
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`, "_blank");
+    }
+
+    function payWithMP() {
+      if (Object.keys(cart).length === 0) {
+        showToast("Agregá productos al carrito primero", "error");
+        return;
+      }
+      const total = Object.entries(cart).reduce((sum, [id, qty]) => {
+        const p = products.find(x => x.id === Number(id));
+        return sum + (p ? p.price * qty : 0);
+      }, 0);
+      const msg = `Demo: acá se redirigiría al checkout de MercadoPago.\n\nTotal del pedido: ${formatPrice(total)}\n\nEn producción se llama a una Edge Function de Supabase que crea la preferencia.`;
+      alert(msg);
+      window.open(MP_LINK, "_blank");
+    }
+
+    // ============================================================
+    // AUTH
+    // ============================================================
+    function openLogin() { openModal("loginModal"); }
+
+    function doLogin() {
+      const u = document.getElementById("loginUser").value.trim();
+      const p = document.getElementById("loginPass").value.trim();
+      if (u === "admin" && p === "admin123") {
+        isAdmin = true;
+        sessionStorage.setItem(AUTH_KEY, "true");
+        closeModal("loginModal");
+        updateAuthUI();
+        showToast("Bienvenido, admin");
+      } else {
+        showToast("Credenciales incorrectas", "error");
+      }
+    }
+
+    function logout() {
+      isAdmin = false;
+      sessionStorage.removeItem(AUTH_KEY);
+      updateAuthUI();
+      showToast("Sesión cerrada");
+    }
+
+    function updateAuthUI() {
+      document.getElementById("loginBtn").style.display = isAdmin ? "none" : "inline-block";
+      document.getElementById("adminPanelBtn").style.display = isAdmin ? "inline-block" : "none";
+      document.getElementById("logoutBtn").style.display = isAdmin ? "inline-block" : "none";
+      renderCatalog();
+    }
+
+    // ============================================================
+    // ADMIN — ABM
+    // ============================================================
+    function openAdminPanel() {
+      renderAdminTable();
+      openModal("adminModal");
+    }
+
+    function renderAdminTable() {
+      const filtered = adminSearchTerm
+        ? products.filter(p => p.name.toLowerCase().includes(adminSearchTerm.toLowerCase()))
+        : products;
+
+      document.getElementById("adminTableBody").innerHTML = filtered.map(p => `
+        <tr>
+          <td>${p.emoji}</td>
+          <td>${escapeHtml(p.name)}</td>
+          <td>${formatPrice(p.price)}</td>
+          <td>${p.offer ? "Sí" : "No"}</td>
+          <td>${p.visible ? "Sí" : "No"}</td>
+          <td>
+            <button class="btn-edit" onclick="editProduct(${p.id})">Editar</button>
+            <button class="btn-toggle" onclick="toggleVisible(${p.id})">${p.visible ? "Ocultar" : "Mostrar"}</button>
+            <button class="btn-delete" onclick="deleteProduct(${p.id})">Eliminar</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function filterAdminTable() {
+      adminSearchTerm = document.getElementById("adminSearchInput").value.trim();
+      renderAdminTable();
+    }
+
+    function clearAdminSearch() {
+      document.getElementById("adminSearchInput").value = "";
+      adminSearchTerm = "";
+      renderAdminTable();
+    }
+
+    function openProductForm(product = null) {
+      document.getElementById("productFormTitle").textContent = product ? "Editar producto" : "Nuevo producto";
+      document.getElementById("prodId").value = product ? product.id : "";
+      document.getElementById("prodName").value = product ? product.name : "";
+      document.getElementById("prodEmoji").value = product ? product.emoji : "";
+      document.getElementById("prodDesc").value = product ? product.desc : "";
+      document.getElementById("prodPrice").value = product ? product.price : "";
+      document.getElementById("prodOldPrice").value = product && product.oldPrice ? product.oldPrice : "";
+      document.getElementById("prodOffer").checked = product ? !!product.offer : false;
+      document.getElementById("prodVisible").checked = product ? !!product.visible : true;
+      openModal("productModal");
+    }
+
+    function editProduct(id) {
+      const p = products.find(x => x.id === id);
+      if (p) openProductForm(p);
+    }
+
+    function saveProduct() {
+      const id = document.getElementById("prodId").value;
+      const data = {
+        name: document.getElementById("prodName").value.trim(),
+        emoji: document.getElementById("prodEmoji").value.trim() || "📦",
+        desc: document.getElementById("prodDesc").value.trim(),
+        price: Number(document.getElementById("prodPrice").value),
+        oldPrice: document.getElementById("prodOldPrice").value ? Number(document.getElementById("prodOldPrice").value) : null,
+        offer: document.getElementById("prodOffer").checked,
+        visible: document.getElementById("prodVisible").checked
+      };
+
+      if (!data.name || !data.price || data.price < 1) {
+        showToast("Nombre y precio son obligatorios (mínimo $1)", "error");
+        return;
+      }
+
+      if (id) {
+        const idx = products.findIndex(x => x.id === Number(id));
+        products[idx] = { ...products[idx], ...data };
+      } else {
+        const newId = Math.max(0, ...products.map(x => x.id)) + 1;
+        products.push({ id: newId, ...data });
+      }
+
+      saveProducts();
+      closeModal("productModal");
+      renderAdminTable();
+      renderCatalog();
+      showToast("Producto guardado");
+    }
+
+    function deleteProduct(id) {
+      if (!confirm("¿Eliminar este producto?")) return;
+      products = products.filter(x => x.id !== id);
+      saveProducts();
+      renderAdminTable();
+      renderCatalog();
+      showToast("Producto eliminado");
+    }
+
+    function toggleVisible(id) {
+      const p = products.find(x => x.id === id);
+      if (p) {
+        p.visible = !p.visible;
+        saveProducts();
+        renderAdminTable();
+        renderCatalog();
+      }
+    }
+
+    function resetCatalog() {
+      if (!confirm("¿Restablecer el catálogo a los valores demo? Se perderán todos los cambios.")) return;
+      products = defaultProducts();
+      saveProducts();
+      renderAdminTable();
+      renderCatalog();
+      showToast("Catálogo restablecido");
+    }
+
+    // ============================================================
+    // MODALES
+    // ============================================================
+    function openModal(id) {
+      document.getElementById(id).classList.add("visible");
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("visible");
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    renderCatalog();
+    updateAuthUI();
+  </script>
+</body>
+</html>
