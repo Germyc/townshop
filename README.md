@@ -4,11 +4,18 @@ Catálogo de landings de demo para comercios locales. Sitio estático desplegado
 
 ## Estructura
 
-- `index.html` — explorador que detecta y muestra todas las landings disponibles.
-- `landing1/` … `landing6/` — landings de ejemplo (petshop, panadería, gourmet, etc.).
-- `landing-demos/` — demos de "Almacén Doña Rosa" (catálogo, ofertas y tienda).
-- `codigos-qr.html` — generador de códigos QR para cada landing.
-- `landing6/` — variante con catálogo dinámico (Firebase) y panel de administración (`admin.html`).
+| Archivo | Descripción |
+| :-- | :-- |
+| `index.html` | Explorador que detecta y muestra todas las landings disponibles. |
+| `landing1/` … `landing6/` | Landings de ejemplo (petshop, panadería, gourmet, etc.). |
+| `landing-demos/landing-1/` | Demo: catálogo que consulta (Almacén Doña Rosa). |
+| `landing-demos/landing-2/` | Demo: presencia local (Panadería El Maná). |
+| `landing-demos/landing-3/` | Demo: tienda online (Almacén Doña Rosa). |
+| `codigos-qr.html` | Generador de códigos QR para cada landing. |
+| `generador-qr.html` | Generador de códigos QR (variante). |
+| `landing6/` | Variante con catálogo dinámico (Firebase) y panel de administración (`admin.html`). |
+| `REPORTE.md` | Reporte de sesión para continuidad desde otra terminal/agent. |
+| `favicon.svg` | Icono del sitio. |
 
 ## Desarrollo
 
