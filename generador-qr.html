@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Códigos QR</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-bottom: 40px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .generator-box { /* Nuevo contenedor para el generador */
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .generator-box input[type="text"] {
+            width: calc(100% - 40px); /* Padding en total */
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Incluir padding en el ancho */
+        }
+        .generator-box button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .generator-box button:hover {
+            background-color: #2980b9;
+        }
+        #qr-display-area {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #qr-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            background: #fff;
+            margin-bottom: 20px; /* Espacio entre imagen y botón */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        #download-qr-btn {
+            background-color: #2ecc71; /* Un color diferente para descargar */
+            margin-top: 0;
+        }
+        #download-qr-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+	<link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+    <h1>Generador de Códigos QR</h1>
+
+    <div class="generator-box">
+        <input type="text" id="qr-input" placeholder="Introduce URL o texto aquí" value="https://townshop-one.vercel.app">
+        <button id="generate-qr-btn">Generar QR</button>
+        <div id="qr-display-area">
+            <img id="qr-image" src="" alt="Código QR generado" style="display: none;">
+            <button id="download-qr-btn" style="display: none;">Descargar QR</button>
+        </div>
+    </div>
+
+    <script>
+        const qrInput = document.getElementById('qr-input');
+        const generateQrBtn = document.getElementById('generate-qr-btn');
+        const qrImage = document.getElementById('qr-image');
+        const downloadQrBtn = document.getElementById('download-qr-btn');
+
+        function generateQrCode() {
+            const text = qrInput.value.trim();
+            if (text) {
+                const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(text)}&size=300`;
+                qrImage.src = qrUrl;
+                qrImage.onload = () => { // Asegurarse de que la imagen se cargue antes de mostrarla y habilitar la descarga
+                    qrImage.style.display = 'block';
+                    downloadQrBtn.style.display = 'block';
+                };
+                qrImage.onerror = () => {
+                    qrImage.style.display = 'none';
+                    downloadQrBtn.style.display = 'none';
+                    alert('Error al cargar el código QR. Asegúrate de que el texto es válido.');
+                };
+            } else {
+                qrImage.style.display = 'none';
+                downloadQrBtn.style.display = 'none';
+                alert('Por favor, introduce una URL o texto para generar el QR.');
+            }
+        }
+
+        async function downloadQrCode() {
+            const imageUrl = qrImage.src;
+            if (!imageUrl || qrImage.style.display === 'none' || qrImage.naturalWidth === 0) { // Verificar si la imagen está realmente visible/cargada
+                alert('No hay un código QR válido para descargar.');
+                return;
+            }
+
+            try {
+                const response = await fetch(imageUrl);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                const filename = (qrInput.value.trim().substring(0, 20) || 'codigo-qr').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.png';
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url); // Limpiar la URL del objeto
+            } catch (error) {
+                console.error('Error al descargar el código QR:', error);
+                alert('Error al descargar el código QR. Inténtalo de nuevo.');
+            }
+        }
+
+        generateQrBtn.addEventListener('click', generateQrCode);
+        downloadQrBtn.addEventListener('click', downloadQrCode);
+
+        // Generar QR al cargar la página con el valor inicial
+        if (qrInput.value.trim()) {
+            generateQrCode();
+        }
+    </script>
+
+</body>
+</html>
