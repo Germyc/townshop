@@ -13,3 +13,4 @@ desktop.ini
 
 # Node
 node_modules/
+.aider*
